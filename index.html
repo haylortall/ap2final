@@ -1,0 +1,1759 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AP2 Final Review</title>
+  <style>
+    :root {
+      --bg: #050505;
+      --card: #111;
+      --text: #f7f7f7;
+      --muted: #aaa;
+      --line: #2a2a2a;
+      --good: #a7f3d0;
+      --bad: #fecaca;
+      --soft: #1b1b1b;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
+    }
+
+    .app {
+      width: min(760px, 100%);
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      padding: 22px;
+      box-shadow: 0 20px 60px rgba(0,0,0,.45);
+    }
+
+    h1, h2, h3 { margin: 0; }
+    h1 { font-size: clamp(2rem, 7vw, 4rem); letter-spacing: -.06em; }
+    h2 { font-size: clamp(1.5rem, 5vw, 2.5rem); letter-spacing: -.04em; }
+    h3 { font-size: 1.05rem; color: var(--muted); font-weight: 500; }
+
+    .sub {
+      color: var(--muted);
+      margin: 10px 0 20px;
+      line-height: 1.45;
+    }
+
+    .grid {
+      display: grid;
+      gap: 10px;
+    }
+
+    .menu {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    @media (max-width: 520px) {
+      .menu { grid-template-columns: 1fr; }
+      .app { padding: 16px; border-radius: 18px; }
+    }
+
+    button {
+      appearance: none;
+      border: 1px solid var(--line);
+      background: #fff;
+      color: #000;
+      font: inherit;
+      border-radius: 16px;
+      padding: 15px 16px;
+      cursor: pointer;
+      font-weight: 700;
+      text-align: left;
+      transition: transform .08s ease, opacity .08s ease, background .08s ease;
+    }
+
+    button:hover { transform: translateY(-1px); }
+    button:active { transform: translateY(0); opacity: .75; }
+
+    .ghost {
+      background: transparent;
+      color: var(--text);
+    }
+
+    .danger {
+      background: transparent;
+      color: #ffb4b4;
+      border-color: #512323;
+    }
+
+    .option {
+      width: 100%;
+      background: var(--soft);
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    .option.correct { border-color: #48c78e; background: rgba(72,199,142,.16); }
+    .option.wrong { border-color: #ff6b6b; background: rgba(255,107,107,.14); }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 18px;
+      color: var(--muted);
+      font-size: .95rem;
+    }
+
+    .pill {
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 7px 10px;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+
+    .question {
+      font-size: clamp(1.45rem, 5vw, 2.45rem);
+      line-height: 1.08;
+      letter-spacing: -.04em;
+      margin: 14px 0 20px;
+    }
+
+    input {
+      width: 100%;
+      padding: 16px;
+      border-radius: 16px;
+      border: 1px solid var(--line);
+      background: #080808;
+      color: var(--text);
+      font-size: 1.1rem;
+      outline: none;
+      margin-bottom: 10px;
+    }
+
+    .feedback {
+      margin-top: 16px;
+      padding: 14px;
+      border-radius: 16px;
+      border: 1px solid var(--line);
+      background: #0a0a0a;
+      line-height: 1.45;
+    }
+
+    .feedback.good { border-color: rgba(72,199,142,.55); }
+    .feedback.bad { border-color: rgba(255,107,107,.55); }
+
+    .small {
+      color: var(--muted);
+      font-size: .95rem;
+      line-height: 1.45;
+    }
+
+    .row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 16px;
+    }
+
+    .row button { flex: 1; min-width: 140px; text-align: center; }
+
+    .statgrid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin: 18px 0;
+    }
+
+    .stat {
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 14px;
+      background: #0b0b0b;
+    }
+
+    .stat b { display:block; font-size:1.5rem; margin-bottom: 4px; }
+
+    ul { padding-left: 20px; }
+    li { margin: 10px 0; color: #ddd; }
+    .answer { color: var(--good); font-weight: 800; }
+
+    .tiny { font-size: .82rem; color: #777; margin-top: 14px; }
+  </style>
+</head>
+
+<body>
+  <main class="app" id="app"></main>
+
+  <script>
+    const RAW_QUESTIONS = [
+      // =========================
+      // EXAM 3 — RESPIRATORY
+      // =========================
+    
+      {
+        category: "Exam 3 - Respiratory",
+        question: "Which of the following is NOT a function of the respiratory system?",
+        options: ["Gas exchange", "Acid-base balance", "Sound perception", "Ventilation"],
+        answer: "Sound perception",
+        explanation: "NOT respiratory = sound perception.",
+        sourceNote: "Func of resp = NOT sound percep"
+      },
+      {
+        category: "Exam 3 - Respiratory",
+        question: "The respiratory zone of the respiratory tract is the:",
+        options: ["Site of gas exchange", "Site of sound perception", "Site of food movement", "Site of bile release"],
+        answer: "Site of gas exchange",
+        explanation: "Resp zone = gas exchange.",
+        sourceNote: "Resp zone of resp tract = site of gas exchange"
+      },
+      {
+        category: "Exam 3 - Respiratory",
+        question: "Paranasal sinuses are lined with:",
+        options: ["Simple squamous cells", "Pseudostratified ciliated columnar cells", "Simple cuboidal cells", "Stratified squamous cells"],
+        answer: "Pseudostratified ciliated columnar cells",
+        explanation: "Sinuses = pseudostrat ciliated columnar.",
+        sourceNote: "Paranasal sinuses lined w = pseudostrat cil colum cells"
+      },
+      {
+        category: "Exam 3 - Respiratory",
+        question: "Mucin increases the ______ of mucus and increases its ability to trap dust and dirt.",
+        options: ["Viscosity / thickness", "Oxygen level", "pH", "Surfactant production"],
+        answer: "Viscosity / thickness",
+        explanation: "Mucin = thicker mucus.",
+        sourceNote: "Mucin increas visc (thickness) of mucus, and increase trap dust & dirt"
+      },
+      {
+        category: "Exam 3 - Respiratory",
+        question: "The alveolus is the site of gas exchange and is lined with:",
+        options: ["Simple squamous epithelium", "Pseudostratified ciliated columnar epithelium", "Simple cuboidal epithelium", "Transitional epithelium"],
+        answer: "Simple squamous epithelium",
+        explanation: "Alveoli = simple squamous.",
+        sourceNote: "Alveolus = site of gas ex and lined w simple squam"
+      },
+      {
+        category: "Exam 3 - Respiratory",
+        question: "Which cranial nerve innervates the lungs?",
+        options: ["Vagus nerve", "Optic nerve", "Facial nerve", "Hypoglossal nerve"],
+        answer: "Vagus nerve",
+        explanation: "Vagus nerve innervates lungs.",
+        sourceNote: "Vagus nerv innervates lungs"
+      },
+      {
+        category: "Exam 3 - Respiratory",
+        question: "The sympathetic nervous system causes:",
+        options: ["Bronchodilation", "Bronchoconstriction", "Pulmonary surfactant release", "Gas exchange"],
+        answer: "Bronchodilation",
+        explanation: "Sympathetic = bronchodilation.",
+        sourceNote: "symp nerv system causes bronchodilation"
+      },
+      {
+        category: "Exam 3 - Respiratory",
+        question: "Alveolar type II cells secrete:",
+        options: ["Pulmonary surfactant", "Mucin", "Gastrin", "Bile"],
+        answer: "Pulmonary surfactant",
+        explanation: "Type II cells = pulmonary surfactant.",
+        sourceNote: "Alv type 2 cells secrete pulm serfectant"
+      },
+      {
+        category: "Exam 3 - Respiratory",
+        question: "Which statement about the respiratory center is FALSE?",
+        options: [
+          "It is in the cerebellum",
+          "It is a collection of autonomic nuclei in the brainstem",
+          "The medullary respiratory center regulates respiratory rate",
+          "The pontine respiratory center facilitates smooth transitions between inspiration and expiration",
+          "Chemoreceptors send signals to the respiratory center to alter breathing"
+        ],
+        answer: "It is in the cerebellum",
+        explanation: "Brainstem NOT cerebellum.",
+        sourceNote: "Resp center is - NOT in cerebellum..."
+      },
+      {
+        category: "Exam 3 - Respiratory",
+        question: "Thoracic cavity muscles expand when breathing and ______ lung volume, which ______ lung pressure. Then lung pressure goes below atmospheric pressure, allowing air into lungs.",
+        options: ["increase; decrease", "increase; increase", "decrease; decrease", "decrease; increase"],
+        answer: "increase; decrease",
+        explanation: "Volume ↑ → pressure ↓ → air flows in.",
+        sourceNote: "Thorac cav muscles expand... INC lung vol which DEC lung pressure... below atmospheric pressure"
+      },
+      {
+        category: "Exam 3 - Respiratory",
+        question: "Oxygen does NOT move:",
+        options: ["Up pressure gradient from low to high pressure", "Down pressure gradient from high to low pressure", "From alveoli into blood", "By diffusion"],
+        answer: "Up pressure gradient from low to high pressure",
+        explanation: "Oxygen goes high → low.",
+        sourceNote: "Ox does NOT move up pressure gradient from area of low to high pres"
+      },
+      {
+        category: "Exam 3 - Respiratory",
+        question: "Oxygen DOES move:",
+        options: ["From high pressure to low pressure", "From low pressure to high pressure", "Against its gradient", "Only with ATP"],
+        answer: "From high pressure to low pressure",
+        explanation: "O₂ moves down pressure gradient.",
+        sourceNote: "Oxygen goes from high pressure to low pressure"
+      },
+      {
+        category: "Exam 3 - Respiratory",
+        question: "Pleural cavity serous fluid functions to:",
+        options: ["Lubricate lungs from friction during breathing", "Produce pulmonary surfactant", "Trap dust and dirt", "Increase lung pressure"],
+        answer: "Lubricate lungs from friction during breathing",
+        explanation: "Pleural fluid = lubrication.",
+        sourceNote: "Pleural cav has serous fluid that lubricates lungs from friction"
+      },
+      {
+        category: "Exam 3 - Respiratory",
+        question: "Correct gas exchange sequence begins with:",
+        options: ["Oxygen inhaled", "Carbon dioxide exhaled", "Cells use oxygen", "Blood transports carbon dioxide"],
+        answer: "Oxygen inhaled",
+        explanation: "Sequence starts with O₂ inhaled.",
+        sourceNote: "Gas ex sequence - 1 ox inhaled"
+      },
+      {
+        category: "Exam 3 - Respiratory",
+        question: "Correct gas exchange sequence: oxygen is inhaled, then:",
+        options: ["Oxygen is transported to cells by blood circulation", "Carbon dioxide is exhaled", "Cells produce bile", "Oxygen enters urine"],
+        answer: "Oxygen is transported to cells by blood circulation",
+        explanation: "O₂ inhaled → blood transports it.",
+        sourceNote: "2 ox transported to cells by blood circ"
+      },
+      {
+        category: "Exam 3 - Respiratory",
+        question: "During gas exchange sequence, cells use oxygen to generate:",
+        options: ["Carbon dioxide", "Bile", "Gastrin", "Pulmonary surfactant"],
+        answer: "Carbon dioxide",
+        explanation: "Cells use O₂ → make CO₂.",
+        sourceNote: "cells use ox to generate carbon dioxide"
+      },
+      {
+        category: "Exam 3 - Respiratory",
+        question: "During gas exchange sequence, blood circulation transports carbon dioxide:",
+        options: ["To the lungs", "To the stomach", "To the gallbladder", "To the pancreas"],
+        answer: "To the lungs",
+        explanation: "CO₂ returns to lungs.",
+        sourceNote: "blood circ transports carbon diox to lungs"
+      },
+      {
+        category: "Exam 3 - Respiratory",
+        question: "The final step in the gas exchange sequence is:",
+        options: ["Carbon dioxide exhaled", "Oxygen inhaled", "Bile released", "Gastrin secreted"],
+        answer: "Carbon dioxide exhaled",
+        explanation: "Final = CO₂ out.",
+        sourceNote: "carbon diox exhaled"
+      },
+      {
+        category: "Exam 3 - Respiratory",
+        question: "Average resting respiratory rate is:",
+        options: ["12–15 breaths per minute", "2–5 breaths per minute", "30–40 breaths per minute", "60 breaths per minute"],
+        answer: "12–15 breaths per minute",
+        explanation: "Normal = 12–15.",
+        sourceNote: "12-15 breaths per min @ rest"
+      },
+      {
+        category: "Exam 3 - Respiratory",
+        question: "CO₂ reaction most common in RBCs in pulmonary capillaries of lungs:",
+        options: ["HCO₃⁻ recombines with H⁺ to form H₂CO₃", "Glucose becomes pyruvate", "Bile becomes chyme", "O₂ becomes bicarbonate"],
+        answer: "HCO₃⁻ recombines with H⁺ to form H₂CO₃",
+        explanation: "Bicarb + H⁺ → carbonic acid.",
+        sourceNote: "Co2 reac most com in rbc... hc03- recombines with h+ to form H2CO3"
+      },
+      {
+        category: "Exam 3 - Respiratory",
+        question: "Hemoglobin transports:",
+        options: ["Oxygen, carbon dioxide, and hydrogen ions", "Only oxygen", "Only glucose", "Only bile"],
+        answer: "Oxygen, carbon dioxide, and hydrogen ions",
+        explanation: "Hemoglobin carries O₂, CO₂, H⁺.",
+        sourceNote: "Hem transports - Ox - Carbon dioxide - Hydrogen ions"
+      },
+      {
+        category: "Exam 3 - Respiratory",
+        question: "Airway obstruction causes hypoventilation, which can cause:",
+        options: ["Hypoxia and respiratory acidosis", "Hyperoxia and alkalosis", "Increased bile release", "Increased GFR"],
+        answer: "Hypoxia and respiratory acidosis",
+        explanation: "Hypovent = low O₂ + acid.",
+        sourceNote: "Airway obstruc = hypovent = hypoxia and resp acidosis"
+      },
+      {
+        category: "Exam 3 - Respiratory",
+        question: "O₂ goes from alveoli into blood because:",
+        options: ["Partial pressure of oxygen is higher in alveoli than in blood", "Blood pressure is higher than alveoli", "O₂ moves low to high", "CO₂ blocks diffusion"],
+        answer: "Partial pressure of oxygen is higher in alveoli than in blood",
+        explanation: "Alveoli O₂ pressure > blood.",
+        sourceNote: "O2 goes fro alv then into blood becuase partial pressure of ox is higher in alv than in blood"
+      },
+      {
+        category: "Exam 3 - Respiratory",
+        question: "Pneumothorax matches which definition?",
+        options: ["Collapsed lung", "Chronic inflammatory respiratory condition", "Progressive airflow limitation", "Development of fibrosis"],
+        answer: "Collapsed lung",
+        explanation: "Pneumothorax = collapsed lung.",
+        sourceNote: "Pnemothorax - collapsed lung"
+      },
+      {
+        category: "Exam 3 - Respiratory",
+        question: "Pulmonary fibrosis matches which definition?",
+        options: ["Disordered healing leading to development of fibrosis", "Collapsed lung", "Chronic inflammatory respiratory condition", "Progressive airflow limitation"],
+        answer: "Disordered healing leading to development of fibrosis",
+        explanation: "Fibrosis = scar tissue.",
+        sourceNote: "Pulm fibrosis - disregard of healing leads to dev of fibrosis"
+      },
+      {
+        category: "Exam 3 - Respiratory",
+        question: "Asthma matches which definition?",
+        options: ["Chronic inflammatory respiratory condition", "Collapsed lung", "Progressive airflow limitation and tissue destruction", "Disordered healing fibrosis"],
+        answer: "Chronic inflammatory respiratory condition",
+        explanation: "Asthma = chronic inflammation.",
+        sourceNote: "Asthma - chronic inflam resp cond"
+      },
+      {
+        category: "Exam 3 - Respiratory",
+        question: "COPD matches which definition?",
+        options: ["Progressive airflow limitation and tissue destruction", "Collapsed lung", "Chronic inflammatory respiratory condition", "Disordered healing fibrosis"],
+        answer: "Progressive airflow limitation and tissue destruction",
+        explanation: "COPD = airflow limitation.",
+        sourceNote: "COPD - progress airflow limit and tissue destruct"
+      },
+      {
+        category: "Exam 3 - Respiratory",
+        question: "Air flows out of lungs during expiration because:",
+        options: ["Intrapulmonary pressure is greater than atmospheric pressure", "Intrapulmonary pressure is lower than atmospheric pressure", "Lung pressure goes below atmospheric pressure", "O₂ moves low to high"],
+        answer: "Intrapulmonary pressure is greater than atmospheric pressure",
+        explanation: "Expiration = pressure inside > outside.",
+        sourceNote: "Airflow out of lung during expir because intrapulm pressure is greater than atmospheric pressure"
+      },
+      {
+        category: "Exam 3 - Respiratory",
+        question: "Henry’s law is an example of:",
+        options: ["Hyperbaric oxygenation", "Pulmonary fibrosis", "Bile release", "Glycolysis"],
+        answer: "Hyperbaric oxygenation",
+        explanation: "Henry’s law = hyperbaric oxygenation.",
+        sourceNote: "Henrys law = is ex of hyperbaric oxygenation"
+      },
+    
+      // =========================
+      // EXAM 3 — DIGESTIVE
+      // =========================
+    
+      {
+        category: "Exam 3 - Digestive",
+        question: "Which of the following is NOT a function of digestion?",
+        options: ["Absorption", "Ingestion", "Secretion", "Elimination through urine"],
+        answer: "Elimination through urine",
+        explanation: "Urine = urinary, not digestive.",
+        sourceNote: "NOT func of digest = elimination thru urine"
+      },
+      {
+        category: "Exam 3 - Digestive",
+        question: "Which of the following IS a function of digestion?",
+        options: ["Absorption", "Urine production", "Gamete production", "Oxygen transport"],
+        answer: "Absorption",
+        explanation: "Digestive = absorbs.",
+        sourceNote: "YES absorp"
+      },
+      {
+        category: "Exam 3 - Digestive",
+        question: "Which of the following IS a function of digestion?",
+        options: ["Ingestion", "Pulmonary ventilation", "Urine filtration", "Sperm production"],
+        answer: "Ingestion",
+        explanation: "Digestive starts with ingestion.",
+        sourceNote: "Ingest"
+      },
+      {
+        category: "Exam 3 - Digestive",
+        question: "Which of the following IS a function of digestion?",
+        options: ["Secretion", "Respiratory alkalosis", "Blood clotting", "Oocyte depletion"],
+        answer: "Secretion",
+        explanation: "GI tract secretes.",
+        sourceNote: "Secret"
+      },
+      {
+        category: "Exam 3 - Digestive",
+        question: "Digestive elimination occurs through:",
+        options: ["Defecation", "Urination", "Ventilation", "Ovulation"],
+        answer: "Defecation",
+        explanation: "Digestive elimination = defecation.",
+        sourceNote: "Eliminate thru defecation"
+      },
+      {
+        category: "Exam 3 - Digestive",
+        question: "The muscularis layer of the GI tract functions to:",
+        options: ["Mix and propel", "Filter proteins", "Produce bile", "Store sperm"],
+        answer: "Mix and propel",
+        explanation: "Muscularis = movement.",
+        sourceNote: "Musculairs (GI tunic) mix and propel"
+      },
+      {
+        category: "Exam 3 - Digestive",
+        question: "GI tract tunic order from outer to inner is:",
+        options: ["Serosa, muscularis, submucosa, mucosa", "Mucosa, submucosa, muscularis, serosa", "Muscularis, serosa, mucosa, submucosa", "Submucosa, mucosa, serosa, muscularis"],
+        answer: "Serosa, muscularis, submucosa, mucosa",
+        explanation: "Outer → inner = serosa to mucosa.",
+        sourceNote: "GI tract tunic order - Serosa - Muscularis - Submucosa - Mucosa"
+      },
+      {
+        category: "Exam 3 - Digestive",
+        question: "Peristalsis is:",
+        options: ["Sequential waves of muscle contractions propelling substances in one direction", "Mixing only", "Osmosis through aquaporins", "Bile secretion"],
+        answer: "Sequential waves of muscle contractions propelling substances in one direction",
+        explanation: "Peristalsis = push forward.",
+        sourceNote: "Peristalisis = sequential waves... propelling substances in one direction"
+      },
+      {
+        category: "Exam 3 - Digestive",
+        question: "The stomach receives ______ from the esophagus and turns it into ______ after gastric mixing.",
+        options: ["Bolus; chyme", "Chyme; bolus", "Bile; bolus", "Plasma; filtrate"],
+        answer: "Bolus; chyme",
+        explanation: "Bolus → chyme.",
+        sourceNote: "The stomach receives BOLUS from the esophogus and turns it into CHYME"
+      },
+      {
+        category: "Exam 3 - Digestive",
+        question: "G cells are secretory cells from the stomach that release:",
+        options: ["Gastrin into blood", "Bile into intestine", "Insulin into blood", "Pulmonary surfactant"],
+        answer: "Gastrin into blood",
+        explanation: "G cells = gastrin.",
+        sourceNote: "Gcell = secretory cell from stomach that releases gastrin into blood"
+      },
+      {
+        category: "Exam 3 - Digestive",
+        question: "Paneth cells are intestinal gland cells that assist with:",
+        options: ["Immunity", "Gas exchange", "Urine filtration", "Ovulation"],
+        answer: "Immunity",
+        explanation: "Paneth = immune help.",
+        sourceNote: "Paneth cells = intestinal glans cells that assist with immunity"
+      },
+      {
+        category: "Exam 3 - Digestive",
+        question: "Simple columnar epithelium lining the gastrointestinal tract allows for:",
+        options: ["Absorption and secretion", "Gas exchange only", "Protein filtration", "Sperm storage"],
+        answer: "Absorption and secretion",
+        explanation: "Simple columnar = absorb + secrete.",
+        sourceNote: "Simple colum epi = lining of gastrointestinal tract that allows for absorb and secre"
+      },
+      {
+        category: "Exam 3 - Digestive",
+        question: "Mumps is caused by a myxovirus that attacks the:",
+        options: ["Parotid glands", "Gallbladder", "Pancreatic islets", "Alveoli"],
+        answer: "Parotid glands",
+        explanation: "Mumps = parotid swelling.",
+        sourceNote: "Mumps caused by myxovirus that attacks parotid glands and cause swelling"
+      },
+      {
+        category: "Exam 3 - Digestive",
+        question: "The pharyngeal phase of swallowing stimulates the deglutition center of the:",
+        options: ["Medulla", "Cerebellum", "Hypothalamus", "Pons only"],
+        answer: "Medulla",
+        explanation: "Swallow center = medulla.",
+        sourceNote: "Pharyngeal = swallowing phase that stimulates deglutition center of medulla"
+      },
+      {
+        category: "Exam 3 - Digestive",
+        question: "Vitamin B12 absorption is NOT a function of the:",
+        options: ["Stomach", "Small intestine", "Ileum", "Digestive tract"],
+        answer: "Stomach",
+        explanation: "B12 ≠ stomach absorption.",
+        sourceNote: "Vit b absorb = NOT a function of the stomach"
+      },
+      {
+        category: "Exam 3 - Digestive",
+        question: "Vitamin B12 is:",
+        options: ["Water soluble, not fat soluble", "Fat soluble, not water soluble", "A macronutrient", "A bile pigment"],
+        answer: "Water soluble, not fat soluble",
+        explanation: "B12 = water soluble.",
+        sourceNote: "Because vit b12 is water sol …. Not fat sol"
+      },
+      {
+        category: "Exam 3 - Digestive",
+        question: "The cephalic phase of digestion occurs by:",
+        options: ["Thought, smell, sight, or taste of food", "Food entering the colon", "Bile leaving the gallbladder", "Defecation reflex"],
+        answer: "Thought, smell, sight, or taste of food",
+        explanation: "Cephalic = brain/senses.",
+        sourceNote: "Cephalic phase... thought/smell/sight/taste of food"
+      },
+      {
+        category: "Exam 3 - Digestive",
+        question: "The small intestine completes digestion of macronutrients with the aid of:",
+        options: ["Brush border enzymes and segmentation", "Pulmonary surfactant", "Hemoglobin", "ANP"],
+        answer: "Brush border enzymes and segmentation",
+        explanation: "Small int = brush border + segmentation.",
+        sourceNote: "Small int complete digestion of macronutrients w aid of brush border enzymes and segmentation"
+      },
+      {
+        category: "Exam 3 - Digestive",
+        question: "Motility and regulation of the large intestine occurs through:",
+        options: ["Mass movements, peristalsis, and haustral churning", "Segmentation only", "Gas exchange", "Filtration"],
+        answer: "Mass movements, peristalsis, and haustral churning",
+        explanation: "Large int = mass, peristalsis, haustra.",
+        sourceNote: "Mot and reg of larg int occurs thru mass movements, peristalis, haustral churning"
+      },
+      {
+        category: "Exam 3 - Digestive",
+        question: "Which is NOT a movement/regulation mechanism of the large intestine?",
+        options: ["Segmentation", "Mass movements", "Peristalsis", "Haustral churning"],
+        answer: "Segmentation",
+        explanation: "Large intestine NOT segmentation.",
+        sourceNote: "Large int... NOT segmentation"
+      },
+      {
+        category: "Exam 3 - Digestive",
+        question: "The gastrocolic reflex is:",
+        options: ["Stomach distension/stretching stimulates mass movements", "Liver produces bile", "Alveoli exchange gas", "Kidneys secrete H⁺"],
+        answer: "Stomach distension/stretching stimulates mass movements",
+        explanation: "Stomach stretch → colon movement.",
+        sourceNote: "Gastrocolic reflex = stomach disten/streching stimulates mass movements"
+      },
+      {
+        category: "Exam 3 - Digestive",
+        question: "Fluid that moves through sinusoids of the liver and into hepatocytes is:",
+        options: ["Mixed arterial and venous blood", "Only arterial blood", "Only venous blood", "Bile"],
+        answer: "Mixed arterial and venous blood",
+        explanation: "Liver sinusoids = mixed blood.",
+        sourceNote: "Fluid that moves thru sinusoids of liver and into hepatocytes = mixed arterial and venous blood"
+      },
+      {
+        category: "Exam 3 - Digestive",
+        question: "Cholecystokinin is the hormone that stimulates the gallbladder to:",
+        options: ["Release bile", "Produce bile", "Release insulin", "Absorb B12"],
+        answer: "Release bile",
+        explanation: "CCK = bile release.",
+        sourceNote: "Cholcystokinin - horm that stim gallbl to rele bile"
+      },
+      {
+        category: "Exam 3 - Digestive",
+        question: "Gallstones scenario: physically inactive, right upper abdominal discomfort, yellow tint in eyes, nausea, fever, upper right abdominal pain points to:",
+        options: ["Gallstones", "Asthma", "Renal failure", "Endometriosis"],
+        answer: "Gallstones",
+        explanation: "RUQ pain + jaundice = gallstones.",
+        sourceNote: "Gallstones - physically inactive, RUQ pain, yellow tint eyes, nausea, fever"
+      },
+      {
+        category: "Exam 3 - Digestive",
+        question: "Celiac disease is an immune-related disorder that damages the small intestine and symptoms appear when eating foods containing:",
+        options: ["Gliadin", "Pulmonary surfactant", "Renin", "Oxytocin"],
+        answer: "Gliadin",
+        explanation: "Celiac trigger = gliadin.",
+        sourceNote: "Celiac... symptoms appear when he eats food that contain gliadin"
+      },
+      {
+        category: "Exam 3 - Digestive",
+        question: "Celiac disease symptoms can include:",
+        options: ["Abdominal discomfort, anemia, bloating", "Collapsed lung", "Oocyte depletion", "Hypotonic hydration"],
+        answer: "Abdominal discomfort, anemia, bloating",
+        explanation: "Celiac = small intestine damage.",
+        sourceNote: "Celiac... discomfort, anemia, bloating"
+      },
+    
+      // =========================
+      // EXAM 3 — METABOLISM / NUTRITION
+      // =========================
+    
+      {
+        category: "Exam 3 - Metabolism/Nutrition",
+        question: "Pancreatic juice contains:",
+        options: ["Amylase, lipase, inactive proteases, HCO₃⁻", "Glucagon only", "Pulmonary surfactant", "Hemoglobin"],
+        answer: "Amylase, lipase, inactive proteases, HCO₃⁻",
+        explanation: "Pancreatic juice = enzymes + HCO₃⁻.",
+        sourceNote: "Panc juice components - Amylase - Lipase - inact proteases - Hco3"
+      },
+      {
+        category: "Exam 3 - Metabolism/Nutrition",
+        question: "Which is NOT a pancreatic juice component?",
+        options: ["Glucagon", "Amylase", "Lipase", "HCO₃⁻"],
+        answer: "Glucagon",
+        explanation: "Glucagon ≠ pancreatic juice.",
+        sourceNote: "Panc juice components... NOT glucagon"
+      },
+      {
+        category: "Exam 3 - Metabolism/Nutrition",
+        question: "Which is NOT a macronutrient example?",
+        options: ["Vitamin C from leafy greens", "Sugar in pastry", "Saturated fat in cheese", "Protein from BBQ brisket"],
+        answer: "Vitamin C from leafy greens",
+        explanation: "Vitamins ≠ macros.",
+        sourceNote: "NOT macronutrient = vit c from leafy greens"
+      },
+      {
+        category: "Exam 3 - Metabolism/Nutrition",
+        question: "Which IS a macronutrient example?",
+        options: ["Sugar in pastry", "Vitamin C", "Water", "Mineral"],
+        answer: "Sugar in pastry",
+        explanation: "Sugar = carbohydrate macro.",
+        sourceNote: "YES - sugar in pastry"
+      },
+      {
+        category: "Exam 3 - Metabolism/Nutrition",
+        question: "Which IS a macronutrient example?",
+        options: ["Saturated fat in cheese", "Vitamin C", "Calcium only", "Water"],
+        answer: "Saturated fat in cheese",
+        explanation: "Fat = macronutrient.",
+        sourceNote: "Sat fat in cheese"
+      },
+      {
+        category: "Exam 3 - Metabolism/Nutrition",
+        question: "Which IS a macronutrient example?",
+        options: ["Fiber in granola bar", "Vitamin C", "Mineral", "Water"],
+        answer: "Fiber in granola bar",
+        explanation: "Fiber = carb-related macro.",
+        sourceNote: "Fiber in granola bar"
+      },
+      {
+        category: "Exam 3 - Metabolism/Nutrition",
+        question: "Which IS a macronutrient example?",
+        options: ["Protein from BBQ brisket", "Vitamin C", "Calcium", "Water"],
+        answer: "Protein from BBQ brisket",
+        explanation: "Protein = macronutrient.",
+        sourceNote: "Protein from bbq brisket"
+      },
+      {
+        category: "Exam 3 - Metabolism/Nutrition",
+        question: "Cholesterol is a required component of the:",
+        options: ["Plasma membrane", "Pulmonary alveolus only", "Urine filtrate", "Mucus only"],
+        answer: "Plasma membrane",
+        explanation: "Cholesterol = membrane component.",
+        sourceNote: "Cholesterol required component for plasma membrane"
+      },
+      {
+        category: "Exam 3 - Metabolism/Nutrition",
+        question: "Good cholesterol is:",
+        options: ["HDL", "LDL", "Glucagon", "HCO₃⁻"],
+        answer: "HDL",
+        explanation: "HDL = good cholesterol.",
+        sourceNote: "Good chol = HDL"
+      },
+      {
+        category: "Exam 3 - Metabolism/Nutrition",
+        question: "Amino acids are the building blocks of:",
+        options: ["Protein", "Fat", "Bile", "Oxygen"],
+        answer: "Protein",
+        explanation: "Amino acids → protein.",
+        sourceNote: "Amino acid = building block of protein"
+      },
+      {
+        category: "Exam 3 - Metabolism/Nutrition",
+        question: "Maintaining nutrient homeostasis by conserving glucose describes the:",
+        options: ["Postabsorptive state", "Absorptive state", "Cephalic phase", "Secretory phase"],
+        answer: "Postabsorptive state",
+        explanation: "Postabsorptive = conserve glucose.",
+        sourceNote: "Maint nut homeost by concerv glucose = postabsorp state"
+      },
+      {
+        category: "Exam 3 - Metabolism/Nutrition",
+        question: "Calcium functions in:",
+        options: ["Muscle contraction and blood clotting", "Only oxygen transport", "Only bile release", "Only digestion"],
+        answer: "Muscle contraction and blood clotting",
+        explanation: "Calcium = contraction + clotting.",
+        sourceNote: "Functions of Calcium - for musc cont and blood clotting"
+      },
+      {
+        category: "Exam 3 - Metabolism/Nutrition",
+        question: "The body increases glycogenesis in response to increased nutrient availability during the:",
+        options: ["Absorptive state", "Postabsorptive state", "Fasting state", "Respiratory state"],
+        answer: "Absorptive state",
+        explanation: "Absorptive = store glucose.",
+        sourceNote: "Body incre glycogenesis... during absorb state"
+      },
+      {
+        category: "Exam 3 - Metabolism/Nutrition",
+        question: "Glucose broken down in glycolysis is converted to:",
+        options: ["2 pyruvate molecules", "Bile", "Pulmonary surfactant", "4 spermatozoa"],
+        answer: "2 pyruvate molecules",
+        explanation: "Glycolysis → 2 pyruvate.",
+        sourceNote: "Glucose broken down in glycolysis —-> 2 pyruvte mol"
+      },
+      {
+        category: "Exam 3 - Metabolism/Nutrition",
+        question: "Extra glucose consumed beyond what is needed is used to synthesize:",
+        options: ["Triglycerides for storage", "Pulmonary surfactant", "Bile salts only", "Hemoglobin"],
+        answer: "Triglycerides for storage",
+        explanation: "Extra glucose → triglycerides.",
+        sourceNote: "Extra gluc... synthesis triglycer for storage"
+      },
+      {
+        category: "Exam 3 - Metabolism/Nutrition",
+        question: "BMR tends to:",
+        options: ["Decrease with age", "Increase with low thyroid hormone", "Stop after digestion", "Stay identical forever"],
+        answer: "Decrease with age",
+        explanation: "Age ↓ BMR.",
+        sourceNote: "BMR - Decrease w age"
+      },
+      {
+        category: "Exam 3 - Metabolism/Nutrition",
+        question: "More muscle causes:",
+        options: ["Higher BMR", "Lower BMR", "No BMR change", "No heat loss"],
+        answer: "Higher BMR",
+        explanation: "More muscle = ↑ BMR.",
+        sourceNote: "More muscle higher bmr"
+      },
+      {
+        category: "Exam 3 - Metabolism/Nutrition",
+        question: "More thyroid hormone causes:",
+        options: ["Higher BMR", "Lower BMR", "No BMR change", "Less heat loss"],
+        answer: "Higher BMR",
+        explanation: "Thyroid ↑ = BMR ↑.",
+        sourceNote: "More thyroid horm, higher bmr"
+      },
+      {
+        category: "Exam 3 - Metabolism/Nutrition",
+        question: "Larger surface area causes:",
+        options: ["More heat lost and higher BMR", "Less heat lost and lower BMR", "No heat loss", "No metabolism"],
+        answer: "More heat lost and higher BMR",
+        explanation: "More surface area = more heat loss.",
+        sourceNote: "Larger surface area, more heat lost, higher bmr"
+      },
+      {
+        category: "Exam 3 - Metabolism/Nutrition",
+        question: "Which BMR statement is NOT true?",
+        options: ["Less thyroid hormone in blood means higher BMR", "More muscle means higher BMR", "More thyroid hormone means higher BMR", "BMR decreases with age"],
+        answer: "Less thyroid hormone in blood means higher BMR",
+        explanation: "Low thyroid ≠ high BMR.",
+        sourceNote: "NOT TRUE - less thyroid home in blood means higher bmr"
+      },
+    
+      // =========================
+      // EXAM 4 — URINARY
+      // =========================
+    
+      {
+        category: "Exam 4 - Urinary",
+        question: "Which is NOT a function of the urinary system?",
+        options: ["Production of gametes", "Waste removal", "Fluid balance", "Electrolyte regulation"],
+        answer: "Production of gametes",
+        explanation: "Gametes ≠ urinary.",
+        sourceNote: "Not funct of urinary = prodcution of gamtes"
+      },
+      {
+        category: "Exam 4 - Urinary",
+        question: "The nephron is the:",
+        options: ["Functional unit of the kidney", "Functional unit of lung", "Site of fertilization", "Pacemaker of heart"],
+        answer: "Functional unit of the kidney",
+        explanation: "Nephron = kidney unit.",
+        sourceNote: "Neohron = func unit of kidney"
+      },
+      {
+        category: "Exam 4 - Urinary",
+        question: "High GFR reduces kidney ability to regulate solute levels because:",
+        options: ["Filtrate moves too quickly through nephron, reducing time for reabsorption", "Filtrate stops moving", "Too much bile is released", "Macula densa stops existing"],
+        answer: "Filtrate moves too quickly through nephron, reducing time for reabsorption",
+        explanation: "High GFR = less reabsorption time.",
+        sourceNote: "High GFR... Filtrate moves too quickly... reduc time avail for reabsorp"
+      },
+      {
+        category: "Exam 4 - Urinary",
+        question: "ADH increases water absorption in the collecting duct by inserting:",
+        options: ["Aquaporins into the plasma membrane", "Glucose transporters into RBCs", "Bile ducts", "Pulmonary surfactant"],
+        answer: "Aquaporins into the plasma membrane",
+        explanation: "ADH = aquaporins = water.",
+        sourceNote: "ADH increases whater asorp in collecting duct by inserting awaphorins"
+      },
+      {
+        category: "Exam 4 - Urinary",
+        question: "When glucose transport maximum (Tm) is exceeded in the kidney:",
+        options: ["Extra glucose is lost in urine", "Extra glucose is stored in bile", "Protein leaves blood normally", "GFR stops"],
+        answer: "Extra glucose is lost in urine",
+        explanation: "Glucose overflow → urine.",
+        sourceNote: "when Glucose trans max (Tm) is exceeded... extra glucose is lost in urine"
+      },
+      {
+        category: "Exam 4 - Urinary",
+        question: "The myogenic mechanism for regulating GFR in kidneys is:",
+        options: ["Afferent arteriole constricts/dilates in response to changing BP", "Gallbladder releases bile", "Macula densa produces sperm", "ANP stores sodium"],
+        answer: "Afferent arteriole constricts/dilates in response to changing BP",
+        explanation: "Myogenic = afferent arteriole responds to BP.",
+        sourceNote: "myogenic mech... afferent arteriole constricts/dilates in response to changing BP"
+      },
+      {
+        category: "Exam 4 - Urinary",
+        question: "Urea recycles in the nephron to help maintain the:",
+        options: ["Medullary osmotic gradient", "Pulmonary surfactant gradient", "Uterine cycle", "Heart pacemaker"],
+        answer: "Medullary osmotic gradient",
+        explanation: "Urea = medullary gradient.",
+        sourceNote: "Urea... recycles in nephron to help maintain medullary osmotic gradient"
+      },
+      {
+        category: "Exam 4 - Urinary",
+        question: "Reabsorption and secretion of H⁺ and HCO₃⁻ are regulated in response to changes in:",
+        options: ["Blood pH", "Bile pH", "Oxygen saturation only", "Sperm count"],
+        answer: "Blood pH",
+        explanation: "Kidney helps pH.",
+        sourceNote: "reasop and secretion og H+ and HCO3- is reg in respon to a change in blood PH"
+      },
+      {
+        category: "Exam 4 - Urinary",
+        question: "When macula densa cells detect low sodium chloride levels in the DCT, the JGA responds by:",
+        options: ["Releasing renin from granular cells to raise BP", "Releasing bile", "Secreting pulmonary surfactant", "Stopping filtration permanently"],
+        answer: "Releasing renin from granular cells to raise BP",
+        explanation: "Low NaCl → renin.",
+        sourceNote: "mac dens low sodium chloride... JGA releasing renin... raise BP"
+      },
+      {
+        category: "Exam 4 - Urinary",
+        question: "Most water reabsorption in the nephron occurs by:",
+        options: ["Osmosis through aquaporin channels", "Active transport through bile ducts", "Diffusion through RBCs", "Filtration through alveoli"],
+        answer: "Osmosis through aquaporin channels",
+        explanation: "Water = osmosis + aquaporins.",
+        sourceNote: "osmosis thru aqaporin channels = how maj of water is asop in neph"
+      },
+      {
+        category: "Exam 4 - Urinary",
+        question: "A person with low blood calcium is given PTH to reduce:",
+        options: ["Phosphate reabsorption in kidney", "Oxygen transport", "Pulmonary surfactant", "Bile production"],
+        answer: "Phosphate reabsorption in kidney",
+        explanation: "PTH ↓ phosphate reabsorption.",
+        sourceNote: "low blood calcium is given PTH to reduce phosphate reasorp i kidney"
+      },
+      {
+        category: "Exam 4 - Urinary",
+        question: "Protein is:",
+        options: ["Not a normal waste product in urine", "A normal major waste in urine", "Always expected in urine", "The same as urea"],
+        answer: "Not a normal waste product in urine",
+        explanation: "Protein in urine = abnormal.",
+        sourceNote: "protein is not a normal waste prod in urine"
+      },
+      {
+        category: "Exam 4 - Urinary",
+        question: "UTI in the notes is:",
+        options: ["Urethritis", "Endometriosis", "Hypotonic hydration", "Pulmonary fibrosis"],
+        answer: "Urethritis",
+        explanation: "UTI = urethritis here.",
+        sourceNote: "uTI = urethritis"
+      },
+      {
+        category: "Exam 4 - Urinary",
+        question: "Incontinence is:",
+        options: ["Involuntary elimination or leakage of urine", "Voluntary urine retention", "Loss of oocytes", "High GFR"],
+        answer: "Involuntary elimination or leakage of urine",
+        explanation: "Incontinence = leaking urine.",
+        sourceNote: "incontinece = invol elimination or leak of urine"
+      },
+      {
+        category: "Exam 4 - Urinary",
+        question: "Primary function of the glomerular filtration membrane is to:",
+        options: ["Selectively filter blood based on size and prevent large proteins from entering filtrate", "Release bile", "Produce sperm", "Secrete pulmonary surfactant"],
+        answer: "Selectively filter blood based on size and prevent large proteins from entering filtrate",
+        explanation: "Filter membrane blocks proteins.",
+        sourceNote: "filt membrane... selectively filter blood based on size, prevent large proteins"
+      },
+      {
+        category: "Exam 4 - Urinary",
+        question: "The PCT is lined with:",
+        options: ["Simple cuboidal epithelium with microvilli", "Simple squamous epithelium", "Pseudostratified ciliated columnar epithelium", "Transitional epithelium only"],
+        answer: "Simple cuboidal epithelium with microvilli",
+        explanation: "PCT = cuboidal + microvilli.",
+        sourceNote: "PCT is lined with simple cuboidal ep with microvilli"
+      },
+      {
+        category: "Exam 4 - Urinary",
+        question: "Kidney is in renal failure when approximately ______ of nephrons are destroyed.",
+        options: ["90%", "10%", "25%", "50%"],
+        answer: "90%",
+        explanation: "Renal failure ≈ 90% nephron loss.",
+        sourceNote: "kidney is in renal failure when approx 90% of neph are destroyed"
+      },
+      {
+        category: "Exam 4 - Urinary",
+        question: "Aldosterone helps kidneys secrete:",
+        options: ["Potassium", "Oxygen", "Bile", "Pulmonary surfactant"],
+        answer: "Potassium",
+        explanation: "Aldosterone = K⁺ secretion.",
+        sourceNote: "aldost help kid secrete potas"
+      },
+      {
+        category: "Exam 4 - Urinary",
+        question: "Principal cells respond to:",
+        options: ["Aldosterone", "Pulmonary surfactant", "Gliadin", "Melatonin"],
+        answer: "Aldosterone",
+        explanation: "Principal cells = aldosterone.",
+        sourceNote: "Principal cells respond to aldost"
+      },
+      {
+        category: "Exam 4 - Urinary",
+        question: "Macula densa cells in the DCT primarily monitor:",
+        options: ["Sodium chloride", "Glucose", "Oxygen", "Bile"],
+        answer: "Sodium chloride",
+        explanation: "Macula densa = NaCl.",
+        sourceNote: "mac dens cells in DCT... primarily monitor sodium chloride"
+      },
+      {
+        category: "Exam 4 - Urinary",
+        question: "Countercurrent exchange system functions to:",
+        options: ["Maintain concentration gradient", "Release bile", "Trigger ovulation", "Cause bronchodilation"],
+        answer: "Maintain concentration gradient",
+        explanation: "Countercurrent = gradient.",
+        sourceNote: "fuc of countercurret exchange cyst - maintain conc gradient"
+      },
+    
+      // =========================
+      // EXAM 4 — FLUIDS / ACID-BASE
+      // =========================
+    
+      {
+        category: "Exam 4 - Fluids / Acid-Base",
+        question: "Total body water is highest during:",
+        options: ["Infancy", "Old age", "Adulthood", "Menopause"],
+        answer: "Infancy",
+        explanation: "Infants = highest body water.",
+        sourceNote: "infacny - when total body water is highest"
+      },
+      {
+        category: "Exam 4 - Fluids / Acid-Base",
+        question: "Blood plasma osmolarity ______ when you drink a liter of water.",
+        options: ["Decreases", "Increases", "Stays the same", "Becomes hypertonic"],
+        answer: "Decreases",
+        explanation: "More water = lower osmolarity.",
+        sourceNote: "osmolar of blood plasma decreases when u drink a liter of water"
+      },
+      {
+        category: "Exam 4 - Fluids / Acid-Base",
+        question: "Aerobic cellular respiration results in:",
+        options: ["Metabolic water intake", "Gamete production", "Pulmonary surfactant", "Gliadin damage"],
+        answer: "Metabolic water intake",
+        explanation: "Cell respiration makes metabolic water.",
+        sourceNote: "areoribic cell resp results in metabolic water intake"
+      },
+      {
+        category: "Exam 4 - Fluids / Acid-Base",
+        question: "Someone with severe burns and hemorrhage is at risk for:",
+        options: ["Volume depletion", "Hypotonic hydration only", "Cushing syndrome", "Endometriosis"],
+        answer: "Volume depletion",
+        explanation: "Burns/hemorrhage = fluid loss.",
+        sourceNote: "severe burns and hemorrage - at risk for volume depletion"
+      },
+      {
+        category: "Exam 4 - Fluids / Acid-Base",
+        question: "Too much water before a marathon can cause water intoxication aka:",
+        options: ["Hypotonic hydration", "Respiratory alkalosis", "Renal failure", "Celiac disease"],
+        answer: "Hypotonic hydration",
+        explanation: "Too much water = hypotonic.",
+        sourceNote: "too much water before marathon risk water intox aka - hypotonic hydration"
+      },
+      {
+        category: "Exam 4 - Fluids / Acid-Base",
+        question: "Feeling thirsty is brought on by:",
+        options: ["Decreased salivary secretions and increased blood osmolarity", "Increased salivary secretions and decreased osmolarity", "Low CO₂ only", "High bile release"],
+        answer: "Decreased salivary secretions and increased blood osmolarity",
+        explanation: "Thirst = dry mouth + high osmolarity.",
+        sourceNote: "feeling thirsty brought on by - decrease in saliv secretions and incre in blood osmolarity"
+      },
+      {
+        category: "Exam 4 - Fluids / Acid-Base",
+        question: "When blood volume increases, the atria release:",
+        options: ["ANP", "ADH", "Aldosterone", "Renin"],
+        answer: "ANP",
+        explanation: "High volume = ANP.",
+        sourceNote: "when blood vol incre the atria releases ANP"
+      },
+      {
+        category: "Exam 4 - Fluids / Acid-Base",
+        question: "One effect of ANP is:",
+        options: ["Increases sodium and water loss in urine to reduce blood volume", "Increases sodium retention", "Increases blood volume", "Triggers ovulation"],
+        answer: "Increases sodium and water loss in urine to reduce blood volume",
+        explanation: "ANP dumps Na⁺ + water.",
+        sourceNote: "ANP... increases sodium and water loss in urine to reduce blood volume"
+      },
+      {
+        category: "Exam 4 - Fluids / Acid-Base",
+        question: "The thirst center in the brain is the:",
+        options: ["Hypothalamus", "Medulla", "Cerebellum", "Pons"],
+        answer: "Hypothalamus",
+        explanation: "Thirst = hypothalamus.",
+        sourceNote: "thirst center in brain is hypothal"
+      },
+      {
+        category: "Exam 4 - Fluids / Acid-Base",
+        question: "A hiker at high elevation develops high respiratory rate and low blood CO₂. The acid-base imbalance is:",
+        options: ["Respiratory alkalosis", "Respiratory acidosis", "Metabolic acidosis", "Metabolic alkalosis"],
+        answer: "Respiratory alkalosis",
+        explanation: "Low CO₂ = alkalosis.",
+        sourceNote: "hiker in high elv... high resp rate and low blood co2... resp alkalosis"
+      },
+      {
+        category: "Exam 4 - Fluids / Acid-Base",
+        question: "When pH decreases, the kidney responds by:",
+        options: ["Secreting H⁺", "Retaining H⁺", "Stopping urine formation", "Releasing bile"],
+        answer: "Secreting H⁺",
+        explanation: "Low pH → secrete H⁺.",
+        sourceNote: "PH decrease the kid responds by - secreting H+"
+      },
+    
+      // =========================
+      // EXAM 4 — REPRODUCTIVE
+      // =========================
+    
+      {
+        category: "Exam 4 - Reproductive",
+        question: "Progesterone maintains the thickened endometrium during the ______ phase of the uterine cycle.",
+        options: ["Secretory", "Menstrual", "Proliferative", "Follicular"],
+        answer: "Secretory",
+        explanation: "Progesterone maintains secretory endometrium.",
+        sourceNote: "progest - maintains the thicken endometrium durin the secret phase"
+      },
+      {
+        category: "Exam 4 - Reproductive",
+        question: "Testosterone regulates its own production by providing negative feedback to the:",
+        options: ["Hypothalamus and anterior pituitary", "Gallbladder and liver", "Kidney and bladder", "Uterus and cervix"],
+        answer: "Hypothalamus and anterior pituitary",
+        explanation: "Testosterone = negative feedback.",
+        sourceNote: "testosterone regulates is own production by providing negative feedback to hypothalamus and anterior pituitary"
+      },
+      {
+        category: "Exam 4 - Reproductive",
+        question: "The uterine tube is the site of:",
+        options: ["Fertilization and passageway for ovum from ovary to uterus", "Milk ejection", "Sperm storage", "Bile production"],
+        answer: "Fertilization and passageway for ovum from ovary to uterus",
+        explanation: "Uterine tube = fertilization.",
+        sourceNote: "uterine tube is site of fertilization and passageway for ovum"
+      },
+      {
+        category: "Exam 4 - Reproductive",
+        question: "FSH acts on sustentacular cells to support spermatogenesis within:",
+        options: ["Seminiferous tubules", "Uterine tubes", "Epididymis only", "Ovarian follicles"],
+        answer: "Seminiferous tubules",
+        explanation: "FSH supports sperm in seminiferous tubules.",
+        sourceNote: "FSH - acts on sustentacular cells to support spermatogenesis within seminiferous tubules"
+      },
+      {
+        category: "Exam 4 - Reproductive",
+        question: "After meiosis II is complete, the result is:",
+        options: ["4 daughter haploid cells", "2 diploid cells", "1 oocyte only", "8 spermatozoa"],
+        answer: "4 daughter haploid cells",
+        explanation: "Meiosis II → 4 haploid cells.",
+        sourceNote: "after meiosis 2 is complete the result is 4 daughter haploid cells"
+      },
+      {
+        category: "Exam 4 - Reproductive",
+        question: "Crossing over during meiosis is:",
+        options: ["Chromosomes exchange genetic material", "Sperm storage", "Milk ejection", "Endometrium shedding"],
+        answer: "Chromosomes exchange genetic material",
+        explanation: "Crossing over = exchange DNA.",
+        sourceNote: "cross over during meiosis - chromosomes exchange genetic material"
+      },
+      {
+        category: "Exam 4 - Reproductive",
+        question: "Luteinizing hormone triggers ovulation when it:",
+        options: ["Rapidly increases during the ovarian cycle", "Decreases after menopause", "Stores sperm", "Maintains bile"],
+        answer: "Rapidly increases during the ovarian cycle",
+        explanation: "LH surge = ovulation.",
+        sourceNote: "Luenizing hormone - triggers ovulation when it rapidly increases"
+      },
+      {
+        category: "Exam 4 - Reproductive",
+        question: "Physiological cause of endometriosis:",
+        options: ["Growth of endometrial tissue outside of uterus", "Loss of oocytes", "High GFR", "Low CO₂"],
+        answer: "Growth of endometrial tissue outside of uterus",
+        explanation: "Endometriosis = tissue outside uterus.",
+        sourceNote: "physiological cause of endometriosis = growth of endometrial tissue outside of uterus"
+      },
+      {
+        category: "Exam 4 - Reproductive",
+        question: "Layer sloughed off of uterine wall during menstruation:",
+        options: ["Functional layer of endometrium", "Basal layer only", "Myometrium", "Perimetrium"],
+        answer: "Functional layer of endometrium",
+        explanation: "Menstruation sheds functional layer.",
+        sourceNote: "layer soughed off... functional layer of endometrium"
+      },
+      {
+        category: "Exam 4 - Reproductive",
+        question: "Order of uterine cycle beginning from day 1:",
+        options: ["Menstrual, proliferative, secretory", "Secretory, menstrual, proliferative", "Proliferative, secretory, menstrual", "Ovulatory, menstrual, secretory"],
+        answer: "Menstrual, proliferative, secretory",
+        explanation: "M → P → S.",
+        sourceNote: "order of uterine cycle begin from day 1 = menstrual, proliferative, secretory"
+      },
+      {
+        category: "Exam 4 - Reproductive",
+        question: "Posterior pituitary hormone crucial for milk ejection:",
+        options: ["Oxytocin", "FSH", "LH", "Progesterone"],
+        answer: "Oxytocin",
+        explanation: "Oxytocin = milk ejection.",
+        sourceNote: "post pit hormone crucial for milk ejection - oxytocin"
+      },
+      {
+        category: "Exam 4 - Reproductive",
+        question: "Sperm are produced in:",
+        options: ["Seminiferous tubules", "Epididymis", "Uterine tubes", "Prostate"],
+        answer: "Seminiferous tubules",
+        explanation: "Sperm produced in seminiferous tubules.",
+        sourceNote: "sperm produced in seminiferous tubules"
+      },
+      {
+        category: "Exam 4 - Reproductive",
+        question: "Interstitial cells in testes secrete:",
+        options: ["Testosterone", "Oxytocin", "Progesterone", "ANP"],
+        answer: "Testosterone",
+        explanation: "Interstitial/Leydig = testosterone.",
+        sourceNote: "interstial cells in testes secrete testosterone"
+      },
+      {
+        category: "Exam 4 - Reproductive",
+        question: "Correct order of spermatogenesis stages:",
+        options: [
+          "Spermatogonium, primary spermatocyte, secondary spermatocyte, spermatid, spermatozoon",
+          "Spermatozoon, spermatid, secondary spermatocyte, primary spermatocyte, spermatogonium",
+          "Primary spermatocyte, spermatogonium, spermatid, spermatozoon, secondary spermatocyte",
+          "Spermatid, spermatogonium, spermatozoon, primary spermatocyte, secondary spermatocyte"
+        ],
+        answer: "Spermatogonium, primary spermatocyte, secondary spermatocyte, spermatid, spermatozoon",
+        explanation: "Sperm order = gonia → cytes → tid → zoon.",
+        sourceNote: "order of appearance of spermatogenesis stages..."
+      },
+      {
+        category: "Exam 4 - Reproductive",
+        question: "Spermatozoa are stored in the ______ until fully mature.",
+        options: ["Epididymis", "Seminiferous tubules", "Uterus", "Ovary"],
+        answer: "Epididymis",
+        explanation: "Epididymis = sperm storage.",
+        sourceNote: "spermatozoa stored in epididymis until fully mature"
+      },
+      {
+        category: "Exam 4 - Reproductive",
+        question: "The parasympathetic nervous system facilitates increased blood flow to the penis by facilitating local release of:",
+        options: ["Nitric oxide", "ANP", "Renin", "Gliadin"],
+        answer: "Nitric oxide",
+        explanation: "NO = erection blood flow.",
+        sourceNote: "parasym... increased blood flow to penis... nitric oxide"
+      },
+      {
+        category: "Exam 4 - Reproductive",
+        question: "Primary physiological cause of menopause in women:",
+        options: ["Depletion of oocytes", "Increase in sperm count", "High GFR", "Endometriosis"],
+        answer: "Depletion of oocytes",
+        explanation: "Menopause = oocyte depletion.",
+        sourceNote: "depletion of oocytes = primary physiological cause of menopause"
+      },
+      {
+        category: "Exam 4 - Reproductive",
+        question: "Which is NOT associated with male climacteric?",
+        options: ["Increased sperm motility and count", "Changes in testosterone", "Aging-related reproductive changes", "Reduced reproductive function"],
+        answer: "Increased sperm motility and count",
+        explanation: "NOT male climacteric = increased sperm.",
+        sourceNote: "NOT associated with male climacteric = increased sperm motility and count"
+      },
+      {
+        category: "Exam 4 - Reproductive",
+        question: "Paramesonephric / Mullerian ducts give rise to the:",
+        options: ["Female reproductive system", "Male reproductive system", "Respiratory system", "Urinary bladder only"],
+        answer: "Female reproductive system",
+        explanation: "Mullerian = female repro.",
+        sourceNote: "paramesonephric (mullerian) ducts = female repro syst"
+      },
+      {
+        category: "Exam 4 - Reproductive",
+        question: "Correctly matched homologues:",
+        options: ["Clitoris and glans of penis", "Uterus and testes", "Ovary and prostate", "Vagina and epididymis"],
+        answer: "Clitoris and glans of penis",
+        explanation: "Clitoris = glans homolog.",
+        sourceNote: "clitoris/gans of penis = CORRECTLY matched homologues"
+      },
+    
+      // =========================
+      // QUIZ SCREENSHOT BANK — WORD FOR WORD
+      // =========================
+    
+      {
+        category: "Quiz Screenshot Bank",
+        question: "Which cell is responsible for oxygen transport?",
+        options: ["Erythrocyte", "Neutrophil", "Platelet", "Lymphocyte"],
+        answer: "Erythrocyte",
+        explanation: "Erythrocytes carry O₂.",
+        sourceNote: "Lecture Quiz 4"
+      },
+      {
+        category: "Quiz Screenshot Bank",
+        question: "Which structure is the pacemaker of the heart?",
+        options: ["SA node", "AV node", "Bundle branches", "Purkinje fibers"],
+        answer: "SA node",
+        explanation: "SA node = pacemaker.",
+        sourceNote: "Lecture Quiz 4"
+      },
+      {
+        category: "Quiz Screenshot Bank",
+        question: "Which layer of the heart is responsible for contraction?",
+        options: ["Myocardium", "Epicardium", "Endocardium", "Pericardium"],
+        answer: "Myocardium",
+        explanation: "Myo = muscle.",
+        sourceNote: "Lecture Quiz 4"
+      },
+      {
+        category: "Quiz Screenshot Bank",
+        question: "Which substance is required for synthesis of clotting factors?",
+        options: ["Vitamin K", "Vitamin C", "Iron", "Calcium"],
+        answer: "Vitamin K",
+        explanation: "Vitamin K = clotting factors.",
+        sourceNote: "Lecture Quiz 4"
+      },
+      {
+        category: "Quiz Screenshot Bank",
+        question: "Which organ filters blood and removes old RBCs?",
+        options: ["Spleen", "Liver", "Kidney", "Pancreas"],
+        answer: "Spleen",
+        explanation: "Spleen removes old RBCs.",
+        sourceNote: "Lecture Quiz 4"
+      },
+      {
+        category: "Quiz Screenshot Bank",
+        question: "Blood is classified as:",
+        options: ["Connective tissue", "Epithelial tissue", "Muscle tissue", "Nervous tissue"],
+        answer: "Connective tissue",
+        explanation: "Blood = connective tissue.",
+        sourceNote: "Lecture Quiz 4"
+      },
+      {
+        category: "Quiz Screenshot Bank",
+        question: "Which component makes up about 55% of blood?",
+        options: ["Plasma", "Erythrocytes", "Leukocytes", "Platelets"],
+        answer: "Plasma",
+        explanation: "Plasma ≈ 55%.",
+        sourceNote: "Lecture Quiz 4"
+      },
+      {
+        category: "Quiz Screenshot Bank",
+        question: "The first step in hemostasis is:",
+        options: ["Vascular spasm", "Platelet plug formation", "Coagulation", "Fibrinolysis"],
+        answer: "Vascular spasm",
+        explanation: "Hemostasis starts with spasm.",
+        sourceNote: "Lecture Quiz 4"
+      },
+      {
+        category: "Quiz Screenshot Bank",
+        question: "Which WBC is most abundant?",
+        options: ["Neutrophil", "Basophil", "Eosinophil", "Monocyte"],
+        answer: "Neutrophil",
+        explanation: "Most WBC = neutrophil.",
+        sourceNote: "Lecture Quiz 4"
+      },
+      {
+        category: "Quiz Screenshot Bank",
+        question: "During systole, the heart is:",
+        options: ["Contracting", "Relaxing", "Filling", "Inactive"],
+        answer: "Contracting",
+        explanation: "Systole = squeeze.",
+        sourceNote: "Lecture Quiz 4"
+      },
+      {
+        category: "Quiz Screenshot Bank",
+        question: "Which type of hormone requires a carrier protein in blood?",
+        options: ["Steroid hormones", "Water-soluble hormones", "Peptide hormones", "Catecholamines"],
+        answer: "Steroid hormones",
+        explanation: "Steroids need carriers.",
+        sourceNote: "Lab Quiz 4"
+      },
+      {
+        category: "Quiz Screenshot Bank",
+        question: "Which hormone is released from the posterior pituitary?",
+        options: ["Oxytocin", "TSH", "FSH", "ACTH"],
+        answer: "Oxytocin",
+        explanation: "Posterior pituitary = oxytocin.",
+        sourceNote: "Lab Quiz 4"
+      },
+      {
+        category: "Quiz Screenshot Bank",
+        question: "The right side of the heart pumps blood to the:",
+        options: ["Lungs", "Body", "Brain only", "Kidneys only"],
+        answer: "Lungs",
+        explanation: "Right heart → lungs.",
+        sourceNote: "Lab Quiz 4"
+      },
+      {
+        category: "Quiz Screenshot Bank",
+        question: "Which of the following best describes an endocrine gland?",
+        options: ["Releases hormones into the bloodstream", "Uses ducts", "Releases digestive enzymes only", "Produces bile"],
+        answer: "Releases hormones into the bloodstream",
+        explanation: "Endocrine = bloodstream.",
+        sourceNote: "Lab Quiz 4"
+      },
+      {
+        category: "Quiz Screenshot Bank",
+        question: "Which hormone regulates circadian rhythm?",
+        options: ["Melatonin", "Glucagon", "Insulin", "Aldosterone"],
+        answer: "Melatonin",
+        explanation: "Melatonin = circadian rhythm.",
+        sourceNote: "Lab Quiz 4"
+      },
+      {
+        category: "Quiz Screenshot Bank",
+        question: "Which vessels carry blood away from the heart?",
+        options: ["Arteries", "Veins", "Capillaries", "Venules"],
+        answer: "Arteries",
+        explanation: "Arteries = away.",
+        sourceNote: "Lab Quiz 4"
+      },
+      {
+        category: "Quiz Screenshot Bank",
+        question: "Which condition is associated with excess cortisol?",
+        options: ["Cushing syndrome", "Diabetes insipidus", "Addison crisis", "Graves disease"],
+        answer: "Cushing syndrome",
+        explanation: "High cortisol = Cushing.",
+        sourceNote: "Lab Quiz 4"
+      },
+      {
+        category: "Quiz Screenshot Bank",
+        question: "Which hormone increases blood glucose levels?",
+        options: ["Glucagon", "Insulin", "Oxytocin", "Melatonin"],
+        answer: "Glucagon",
+        explanation: "Glucagon raises glucose.",
+        sourceNote: "Lab Quiz 4"
+      },
+      {
+        category: "Quiz Screenshot Bank",
+        question: "Which system produces slower but longer-lasting effects?",
+        options: ["Endocrine system", "Nervous system", "Skeletal system", "Respiratory system"],
+        answer: "Endocrine system",
+        explanation: "Endocrine = slow + long.",
+        sourceNote: "Lab Quiz 4"
+      },
+      {
+        category: "Quiz Screenshot Bank",
+        question: "Water-soluble hormones exert their effects by:",
+        options: ["Using second messenger systems", "Directly entering the nucleus", "Binding carrier proteins only", "Becoming bile"],
+        answer: "Using second messenger systems",
+        explanation: "Water-soluble = second messenger.",
+        sourceNote: "Lab Quiz 4"
+      }
+    ];
+
+    const QUESTIONS = RAW_QUESTIONS.map((q, i) => ({
+      id: q.id || `full-${i + 1}`,
+      type: q.type || (Array.isArray(q.options) ? "mc" : "fill"),
+      category: q.category || "Mixed",
+      modeGroup: (q.category || "").startsWith("Exam 3") ? "Exam3" :
+                 (q.category || "").startsWith("Exam 4") ? "Exam4" :
+                 (q.category || "").startsWith("Quiz") ? "Quiz" : "Mixed",
+      question: q.question,
+      options: q.options || [],
+      answer: q.answer,
+      acceptable: q.acceptable || [],
+      explanation: q.explanation || "",
+      sourceNote: q.sourceNote || ""
+    }));
+
+    const STORAGE_KEY = "ap2FinalReviewProgress_v2_full";
+    const ROUND_SIZE = 10;
+
+    let state = {
+      screen: "home",
+      mode: null,
+      round: [],
+      index: 0,
+      score: 0,
+      answered: false,
+      userAnswers: []
+    };
+
+    function loadProgress() {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (!saved) return { missed: {}, correct: 0, total: 0, fullCoverageSeen: [] };
+      try { return JSON.parse(saved); } catch { return { missed: {}, correct: 0, total: 0, fullCoverageSeen: [] }; }
+    }
+
+    function saveProgress(progress) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(progress));
+    }
+
+    function resetProgress() {
+      if (confirm("Reset all progress and missed questions?")) {
+        localStorage.removeItem(STORAGE_KEY);
+        renderHome();
+      }
+    }
+
+    function normalize(s) {
+      return String(s || "")
+        .toLowerCase()
+        .replace(/[^\w\s-]/g, "")
+        .replace(/\s+/g, " ")
+        .trim();
+    }
+
+    function getMissedIds() {
+      return Object.entries(loadProgress().missed || {})
+        .filter(([id, data]) => data && data.active)
+        .map(([id]) => id);
+    }
+
+    function updateTracking(question, isCorrect) {
+      const p = loadProgress();
+      p.total = (p.total || 0) + 1;
+      if (isCorrect) p.correct = (p.correct || 0) + 1;
+
+      p.missed = p.missed || {};
+      const current = p.missed[question.id] || { active: false, correctStreak: 0, missedCount: 0 };
+
+      if (isCorrect) {
+        if (current.active) {
+          current.correctStreak = (current.correctStreak || 0) + 1;
+          if (current.correctStreak >= 2) {
+            current.active = false;
+          }
+        }
+      } else {
+        current.active = true;
+        current.correctStreak = 0;
+        current.missedCount = (current.missedCount || 0) + 1;
+      }
+
+      p.missed[question.id] = current;
+      saveProgress(p);
+    }
+
+    function shuffle(arr) {
+      return [...arr].sort(() => Math.random() - 0.5);
+    }
+
+    function getQuestionModeLabel(q) {
+      if (q.modeGroup === "Exam3") return "Exam 3";
+      if (q.modeGroup === "Exam4") return "Exam 4";
+      if (q.modeGroup === "Quiz") return "Quiz";
+      return q.category || "Mixed";
+    }
+
+    function getQuestionsForMode(mode) {
+      if (mode === "Exam3") return QUESTIONS.filter(q => q.modeGroup === "Exam3");
+      if (mode === "Exam4") return QUESTIONS.filter(q => q.modeGroup === "Exam4");
+      if (mode === "Quiz") return QUESTIONS.filter(q => q.modeGroup === "Quiz");
+      if (mode === "FullCoverage") {
+        const p = loadProgress();
+        const seen = new Set(p.fullCoverageSeen || []);
+        const unseen = QUESTIONS.filter(q => !seen.has(q.id));
+        return unseen.length ? unseen : [];
+      }
+      if (mode === "Missed") {
+        const ids = getMissedIds();
+        return QUESTIONS.filter(q => ids.includes(q.id));
+      }
+      if (mode === "Mixed") {
+        const missed = QUESTIONS.filter(q => getMissedIds().includes(q.id));
+        const all = QUESTIONS;
+        return [...missed, ...missed, ...all];
+      }
+      return QUESTIONS;
+    }
+
+    function startMode(mode) {
+      const pool = getQuestionsForMode(mode);
+      if (!pool.length) {
+        if (mode === "FullCoverage") {
+          renderFullCoverageDone();
+          return;
+        }
+        alert(mode === "Missed" ? "No missed questions yet. Iconic." : "No questions found.");
+        return;
+      }
+
+      const unique = [];
+      const seen = new Set();
+      for (const q of shuffle(pool)) {
+        if (!seen.has(q.id)) {
+          unique.push(q);
+          seen.add(q.id);
+        }
+      }
+
+      state = {
+        screen: "quiz",
+        mode,
+        round: unique.slice(0, ROUND_SIZE),
+        index: 0,
+        score: 0,
+        answered: false,
+        userAnswers: []
+      };
+
+      renderQuiz();
+    }
+
+    function chooseAnswer(value) {
+      if (state.answered) return;
+      const q = state.round[state.index];
+      let isCorrect = false;
+
+      if (q.type === "fill") {
+        const user = normalize(value);
+        const answers = [q.answer, ...(q.acceptable || [])].map(normalize);
+        isCorrect = answers.includes(user);
+      } else {
+        isCorrect = value === q.answer;
+      }
+
+      state.answered = true;
+      if (isCorrect) state.score++;
+
+      state.userAnswers.push({
+        id: q.id,
+        question: q.question,
+        user: value,
+        correct: q.answer,
+        isCorrect,
+        explanation: q.explanation
+      });
+
+      updateTracking(q, isCorrect);
+      if (state.mode === "FullCoverage") {
+        const p = loadProgress();
+        const seen = new Set(p.fullCoverageSeen || []);
+        seen.add(q.id);
+        p.fullCoverageSeen = [...seen];
+        saveProgress(p);
+      }
+      renderQuiz();
+    }
+
+    function nextQuestion() {
+      if (state.index < state.round.length - 1) {
+        state.index++;
+        state.answered = false;
+        renderQuiz();
+      } else {
+        renderResults();
+      }
+    }
+
+    function renderFullCoverageDone() {
+      const p = loadProgress();
+      const activeMissed = getMissedIds().length;
+      document.getElementById("app").innerHTML = `
+        <h2>Full Coverage complete</h2>
+        <p class="sub">You have seen all <b>${QUESTIONS.length}</b> questions in the full bank.</p>
+        <div class="statgrid">
+          <div class="stat"><b>${p.total || 0}</b><span class="small">answered</span></div>
+          <div class="stat"><b>${p.correct || 0}</b><span class="small">correct</span></div>
+          <div class="stat"><b>${activeMissed}</b><span class="small">missed active</span></div>
+        </div>
+        <div class="row">
+          <button onclick="startMode('Missed')">Retest missed</button>
+          <button class="ghost" onclick="resetFullCoverage()">Restart Full Coverage</button>
+          <button class="ghost" onclick="renderHome()">Home</button>
+        </div>
+      `;
+    }
+
+    function resetFullCoverage() {
+      const p = loadProgress();
+      p.fullCoverageSeen = [];
+      saveProgress(p);
+      startMode('FullCoverage');
+    }
+
+    function renderHome() {
+      const p = loadProgress();
+      const activeMissed = getMissedIds().length;
+      const mastered = Object.values(p.missed || {}).filter(x => x && !x.active && (x.correctStreak || 0) >= 2).length;
+      document.getElementById("app").innerHTML = `
+        <h1>AP2 Final Review</h1>
+        <p class="sub">${QUESTIONS.length} questions. Tiny chunks. Missed ones come back until your brain stops being rude.</p>
+
+        <div class="statgrid">
+          <div class="stat"><b>${p.total || 0}</b><span class="small">answered</span></div>
+          <div class="stat"><b>${activeMissed}</b><span class="small">missed</span></div>
+          <div class="stat"><b>${mastered}</b><span class="small">mastered</span></div>
+        </div>
+
+        <div class="grid menu">
+          <button onclick="startMode('Exam3')">Exam 3<br><span class="small">Respiratory + digestive + metabolism</span></button>
+          <button onclick="startMode('Exam4')">Exam 4<br><span class="small">Urinary + fluids + reproductive</span></button>
+          <button onclick="startMode('Quiz')">Quiz Questions<br><span class="small">20 exact screenshot questions</span></button>
+          <button onclick="startMode('Mixed')">Mixed Final Mode<br><span class="small">Random from all questions</span></button>
+          <button onclick="startMode('FullCoverage')">Full Coverage Review<br><span class="small">See every question before repeats</span></button>
+          <button class="ghost" onclick="startMode('Missed')">Missed Questions<br><span class="small">Retest weak spots</span></button>
+          <button class="danger" onclick="resetProgress()">Reset Progress<br><span class="small">Clean slate</span></button>
+        </div>
+
+        <p class="tiny">Missed questions disappear after you get them correct twice.</p>
+      `;
+    }
+
+    function renderQuiz() {
+      const q = state.round[state.index];
+      const last = state.userAnswers[state.userAnswers.length - 1];
+      const progress = `Question ${state.index + 1} of ${state.round.length}`;
+
+      let inputHTML = "";
+      if (q.type === "fill") {
+        inputHTML = `
+          <input id="fillInput" placeholder="type answer..." autocomplete="off" ${state.answered ? "disabled" : ""} />
+          <button onclick="chooseAnswer(document.getElementById('fillInput').value)">Submit</button>
+        `;
+      } else {
+        inputHTML = `<div class="grid">` + q.options.map(opt => {
+          let cls = "option";
+          if (state.answered) {
+            if (opt === q.answer) cls += " correct";
+            if (last && opt === last.user && !last.isCorrect) cls += " wrong";
+          }
+          return `<button class="${cls}" onclick="chooseAnswer('${opt.replace(/'/g, "\\'")}')">${opt}</button>`;
+        }).join("") + `</div>`;
+      }
+
+      const feedback = state.answered ? `
+        <div class="feedback ${last.isCorrect ? "good" : "bad"}">
+          <b>${last.isCorrect ? "Correct ✅" : `Not quite — answer: ${q.answer}`}</b>
+          <div class="small">${q.explanation}</div>
+        </div>
+        <div class="row">
+          <button onclick="nextQuestion()">Next</button>
+          <button class="ghost" onclick="renderHome()">Home</button>
+        </div>
+      ` : `
+        <div class="row">
+          <button class="ghost" onclick="renderHome()">Home</button>
+        </div>
+      `;
+
+      document.getElementById("app").innerHTML = `
+        <div class="topbar">
+          <span>${state.mode}</span>
+          <span class="pill">${progress}</span>
+        </div>
+        <h3>${q.category}</h3>
+        <div class="question">${q.question}</div>
+        ${inputHTML}
+        ${feedback}
+      `;
+
+      const input = document.getElementById("fillInput");
+      if (input) {
+        input.focus();
+        input.addEventListener("keydown", (e) => {
+          if (e.key === "Enter") chooseAnswer(input.value);
+        });
+      }
+    }
+
+    function renderResults() {
+      const missed = state.userAnswers.filter(a => !a.isCorrect);
+      document.getElementById("app").innerHTML = `
+        <h2>Round complete</h2>
+        <p class="sub">Score: <b>${state.score}/${state.round.length}</b></p>
+
+        ${missed.length ? `
+          <h3>Missed questions</h3>
+          <ul>
+            ${missed.map(m => `
+              <li>
+                ${m.question}<br>
+                <span class="small">You said: ${m.user || "(blank)"}</span><br>
+                <span class="answer">Answer: ${m.correct}</span><br>
+                <span class="small">${m.explanation}</span>
+              </li>
+            `).join("")}
+          </ul>
+        ` : `<p class="sub">No misses. That was rude of you to the exam.</p>`}
+
+        <div class="row">
+          <button onclick="startMode('${state.mode}')">Do another chunk</button>
+          <button class="ghost" onclick="startMode('Missed')">Retest missed</button>
+          <button class="ghost" onclick="renderHome()">Home</button>
+        </div>
+      `;
+    }
+
+    renderHome();
+  </script>
+</body>
+</html>
