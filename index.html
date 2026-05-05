@@ -195,248 +195,416 @@
 
   <script>
     const RAW_QUESTIONS = [
-      // =========================
-      // EXAM 3 — RESPIRATORY
-      // =========================
-    
-      {
-        category: "Exam 3 - Respiratory",
-        question: "Which of the following is NOT a function of the respiratory system?",
-        options: ["Gas exchange", "Acid-base balance", "Sound perception", "Ventilation"],
-        answer: "Sound perception",
-        explanation: "NOT respiratory = sound perception.",
-        sourceNote: "Func of resp = NOT sound percep"
-      },
-      {
-        category: "Exam 3 - Respiratory",
-        question: "The respiratory zone of the respiratory tract is the:",
-        options: ["Site of gas exchange", "Site of sound perception", "Site of food movement", "Site of bile release"],
-        answer: "Site of gas exchange",
-        explanation: "Resp zone = gas exchange.",
-        sourceNote: "Resp zone of resp tract = site of gas exchange"
-      },
-      {
-        category: "Exam 3 - Respiratory",
-        question: "Paranasal sinuses are lined with:",
-        options: ["Simple squamous cells", "Pseudostratified ciliated columnar cells", "Simple cuboidal cells", "Stratified squamous cells"],
-        answer: "Pseudostratified ciliated columnar cells",
-        explanation: "Sinuses = pseudostrat ciliated columnar.",
-        sourceNote: "Paranasal sinuses lined w = pseudostrat cil colum cells"
-      },
-      {
-        category: "Exam 3 - Respiratory",
-        question: "Mucin increases the ______ of mucus and increases its ability to trap dust and dirt.",
-        options: ["Viscosity / thickness", "Oxygen level", "pH", "Surfactant production"],
-        answer: "Viscosity / thickness",
-        explanation: "Mucin = thicker mucus.",
-        sourceNote: "Mucin increas visc (thickness) of mucus, and increase trap dust & dirt"
-      },
-      {
-        category: "Exam 3 - Respiratory",
-        question: "The alveolus is the site of gas exchange and is lined with:",
-        options: ["Simple squamous epithelium", "Pseudostratified ciliated columnar epithelium", "Simple cuboidal epithelium", "Transitional epithelium"],
-        answer: "Simple squamous epithelium",
-        explanation: "Alveoli = simple squamous.",
-        sourceNote: "Alveolus = site of gas ex and lined w simple squam"
-      },
-      {
-        category: "Exam 3 - Respiratory",
-        question: "Which cranial nerve innervates the lungs?",
-        options: ["Vagus nerve", "Optic nerve", "Facial nerve", "Hypoglossal nerve"],
-        answer: "Vagus nerve",
-        explanation: "Vagus nerve innervates lungs.",
-        sourceNote: "Vagus nerv innervates lungs"
-      },
-      {
-        category: "Exam 3 - Respiratory",
-        question: "The sympathetic nervous system causes:",
-        options: ["Bronchodilation", "Bronchoconstriction", "Pulmonary surfactant release", "Gas exchange"],
-        answer: "Bronchodilation",
-        explanation: "Sympathetic = bronchodilation.",
-        sourceNote: "symp nerv system causes bronchodilation"
-      },
-      {
-        category: "Exam 3 - Respiratory",
-        question: "Alveolar type II cells secrete:",
-        options: ["Pulmonary surfactant", "Mucin", "Gastrin", "Bile"],
-        answer: "Pulmonary surfactant",
-        explanation: "Type II cells = pulmonary surfactant.",
-        sourceNote: "Alv type 2 cells secrete pulm serfectant"
-      },
-      {
-        category: "Exam 3 - Respiratory",
-        question: "Which statement about the respiratory center is FALSE?",
-        options: [
-          "It is in the cerebellum",
-          "It is a collection of autonomic nuclei in the brainstem",
-          "The medullary respiratory center regulates respiratory rate",
-          "The pontine respiratory center facilitates smooth transitions between inspiration and expiration",
-          "Chemoreceptors send signals to the respiratory center to alter breathing"
-        ],
-        answer: "It is in the cerebellum",
-        explanation: "Brainstem NOT cerebellum.",
-        sourceNote: "Resp center is - NOT in cerebellum..."
-      },
-      {
-        category: "Exam 3 - Respiratory",
-        question: "Thoracic cavity muscles expand when breathing and ______ lung volume, which ______ lung pressure. Then lung pressure goes below atmospheric pressure, allowing air into lungs.",
-        options: ["increase; decrease", "increase; increase", "decrease; decrease", "decrease; increase"],
-        answer: "increase; decrease",
-        explanation: "Volume ↑ → pressure ↓ → air flows in.",
-        sourceNote: "Thorac cav muscles expand... INC lung vol which DEC lung pressure... below atmospheric pressure"
-      },
-      {
-        category: "Exam 3 - Respiratory",
-        question: "Oxygen does NOT move:",
-        options: ["Up pressure gradient from low to high pressure", "Down pressure gradient from high to low pressure", "From alveoli into blood", "By diffusion"],
-        answer: "Up pressure gradient from low to high pressure",
-        explanation: "Oxygen goes high → low.",
-        sourceNote: "Ox does NOT move up pressure gradient from area of low to high pres"
-      },
-      {
-        category: "Exam 3 - Respiratory",
-        question: "Oxygen DOES move:",
-        options: ["From high pressure to low pressure", "From low pressure to high pressure", "Against its gradient", "Only with ATP"],
-        answer: "From high pressure to low pressure",
-        explanation: "O₂ moves down pressure gradient.",
-        sourceNote: "Oxygen goes from high pressure to low pressure"
-      },
-      {
-        category: "Exam 3 - Respiratory",
-        question: "Pleural cavity serous fluid functions to:",
-        options: ["Lubricate lungs from friction during breathing", "Produce pulmonary surfactant", "Trap dust and dirt", "Increase lung pressure"],
-        answer: "Lubricate lungs from friction during breathing",
-        explanation: "Pleural fluid = lubrication.",
-        sourceNote: "Pleural cav has serous fluid that lubricates lungs from friction"
-      },
-      {
-        category: "Exam 3 - Respiratory",
-        question: "Correct gas exchange sequence begins with:",
-        options: ["Oxygen inhaled", "Carbon dioxide exhaled", "Cells use oxygen", "Blood transports carbon dioxide"],
-        answer: "Oxygen inhaled",
-        explanation: "Sequence starts with O₂ inhaled.",
-        sourceNote: "Gas ex sequence - 1 ox inhaled"
-      },
-      {
-        category: "Exam 3 - Respiratory",
-        question: "Correct gas exchange sequence: oxygen is inhaled, then:",
-        options: ["Oxygen is transported to cells by blood circulation", "Carbon dioxide is exhaled", "Cells produce bile", "Oxygen enters urine"],
-        answer: "Oxygen is transported to cells by blood circulation",
-        explanation: "O₂ inhaled → blood transports it.",
-        sourceNote: "2 ox transported to cells by blood circ"
-      },
-      {
-        category: "Exam 3 - Respiratory",
-        question: "During gas exchange sequence, cells use oxygen to generate:",
-        options: ["Carbon dioxide", "Bile", "Gastrin", "Pulmonary surfactant"],
-        answer: "Carbon dioxide",
-        explanation: "Cells use O₂ → make CO₂.",
-        sourceNote: "cells use ox to generate carbon dioxide"
-      },
-      {
-        category: "Exam 3 - Respiratory",
-        question: "During gas exchange sequence, blood circulation transports carbon dioxide:",
-        options: ["To the lungs", "To the stomach", "To the gallbladder", "To the pancreas"],
-        answer: "To the lungs",
-        explanation: "CO₂ returns to lungs.",
-        sourceNote: "blood circ transports carbon diox to lungs"
-      },
-      {
-        category: "Exam 3 - Respiratory",
-        question: "The final step in the gas exchange sequence is:",
-        options: ["Carbon dioxide exhaled", "Oxygen inhaled", "Bile released", "Gastrin secreted"],
-        answer: "Carbon dioxide exhaled",
-        explanation: "Final = CO₂ out.",
-        sourceNote: "carbon diox exhaled"
-      },
-      {
-        category: "Exam 3 - Respiratory",
-        question: "Average resting respiratory rate is:",
-        options: ["12–15 breaths per minute", "2–5 breaths per minute", "30–40 breaths per minute", "60 breaths per minute"],
-        answer: "12–15 breaths per minute",
-        explanation: "Normal = 12–15.",
-        sourceNote: "12-15 breaths per min @ rest"
-      },
-      {
-        category: "Exam 3 - Respiratory",
-        question: "CO₂ reaction most common in RBCs in pulmonary capillaries of lungs:",
-        options: ["HCO₃⁻ recombines with H⁺ to form H₂CO₃", "Glucose becomes pyruvate", "Bile becomes chyme", "O₂ becomes bicarbonate"],
-        answer: "HCO₃⁻ recombines with H⁺ to form H₂CO₃",
-        explanation: "Bicarb + H⁺ → carbonic acid.",
-        sourceNote: "Co2 reac most com in rbc... hc03- recombines with h+ to form H2CO3"
-      },
-      {
-        category: "Exam 3 - Respiratory",
-        question: "Hemoglobin transports:",
-        options: ["Oxygen, carbon dioxide, and hydrogen ions", "Only oxygen", "Only glucose", "Only bile"],
-        answer: "Oxygen, carbon dioxide, and hydrogen ions",
-        explanation: "Hemoglobin carries O₂, CO₂, H⁺.",
-        sourceNote: "Hem transports - Ox - Carbon dioxide - Hydrogen ions"
-      },
-      {
-        category: "Exam 3 - Respiratory",
-        question: "Airway obstruction causes hypoventilation, which can cause:",
-        options: ["Hypoxia and respiratory acidosis", "Hyperoxia and alkalosis", "Increased bile release", "Increased GFR"],
-        answer: "Hypoxia and respiratory acidosis",
-        explanation: "Hypovent = low O₂ + acid.",
-        sourceNote: "Airway obstruc = hypovent = hypoxia and resp acidosis"
-      },
-      {
-        category: "Exam 3 - Respiratory",
-        question: "O₂ goes from alveoli into blood because:",
-        options: ["Partial pressure of oxygen is higher in alveoli than in blood", "Blood pressure is higher than alveoli", "O₂ moves low to high", "CO₂ blocks diffusion"],
-        answer: "Partial pressure of oxygen is higher in alveoli than in blood",
-        explanation: "Alveoli O₂ pressure > blood.",
-        sourceNote: "O2 goes fro alv then into blood becuase partial pressure of ox is higher in alv than in blood"
-      },
-      {
-        category: "Exam 3 - Respiratory",
-        question: "Pneumothorax matches which definition?",
-        options: ["Collapsed lung", "Chronic inflammatory respiratory condition", "Progressive airflow limitation", "Development of fibrosis"],
-        answer: "Collapsed lung",
-        explanation: "Pneumothorax = collapsed lung.",
-        sourceNote: "Pnemothorax - collapsed lung"
-      },
-      {
-        category: "Exam 3 - Respiratory",
-        question: "Pulmonary fibrosis matches which definition?",
-        options: ["Disordered healing leading to development of fibrosis", "Collapsed lung", "Chronic inflammatory respiratory condition", "Progressive airflow limitation"],
-        answer: "Disordered healing leading to development of fibrosis",
-        explanation: "Fibrosis = scar tissue.",
-        sourceNote: "Pulm fibrosis - disregard of healing leads to dev of fibrosis"
-      },
-      {
-        category: "Exam 3 - Respiratory",
-        question: "Asthma matches which definition?",
-        options: ["Chronic inflammatory respiratory condition", "Collapsed lung", "Progressive airflow limitation and tissue destruction", "Disordered healing fibrosis"],
-        answer: "Chronic inflammatory respiratory condition",
-        explanation: "Asthma = chronic inflammation.",
-        sourceNote: "Asthma - chronic inflam resp cond"
-      },
-      {
-        category: "Exam 3 - Respiratory",
-        question: "COPD matches which definition?",
-        options: ["Progressive airflow limitation and tissue destruction", "Collapsed lung", "Chronic inflammatory respiratory condition", "Disordered healing fibrosis"],
-        answer: "Progressive airflow limitation and tissue destruction",
-        explanation: "COPD = airflow limitation.",
-        sourceNote: "COPD - progress airflow limit and tissue destruct"
-      },
-      {
-        category: "Exam 3 - Respiratory",
-        question: "Air flows out of lungs during expiration because:",
-        options: ["Intrapulmonary pressure is greater than atmospheric pressure", "Intrapulmonary pressure is lower than atmospheric pressure", "Lung pressure goes below atmospheric pressure", "O₂ moves low to high"],
-        answer: "Intrapulmonary pressure is greater than atmospheric pressure",
-        explanation: "Expiration = pressure inside > outside.",
-        sourceNote: "Airflow out of lung during expir because intrapulm pressure is greater than atmospheric pressure"
-      },
-      {
-        category: "Exam 3 - Respiratory",
-        question: "Henry’s law is an example of:",
-        options: ["Hyperbaric oxygenation", "Pulmonary fibrosis", "Bile release", "Glycolysis"],
-        answer: "Hyperbaric oxygenation",
-        explanation: "Henry’s law = hyperbaric oxygenation.",
-        sourceNote: "Henrys law = is ex of hyperbaric oxygenation"
-      },
+     // =========================
+// EXAM 3 — RESPIRATORY
+// =========================
+
+{
+  category: "Exam 3 - Respiratory",
+  question: "Which of the following is NOT a function of the respiratory system?",
+  options: [
+    "Gas exchange",
+    "Acid-base balance",
+    "Ventilation",
+    "Sound perception"
+  ],
+  answer: "Sound perception",
+  explanation: "Respiratory helps make sound, but sound perception = nervous system.",
+  sourceNote: "Func of resp = NOT sound percep"
+},
+
+{
+  category: "Exam 3 - Respiratory",
+  question: "The respiratory zone of the respiratory tract is the site of:",
+  options: [
+    "Gas exchange",
+    "Air conduction only",
+    "Mucus production only",
+    "Sound perception"
+  ],
+  answer: "Gas exchange",
+  explanation: "Respiratory zone = alveoli = gas exchange.",
+  sourceNote: "Resp zone of resp tract = site of gas exchange"
+},
+
+{
+  category: "Exam 3 - Respiratory",
+  question: "Paranasal sinuses are lined with which type of epithelium?",
+  options: [
+    "Pseudostratified ciliated columnar cells",
+    "Simple squamous cells",
+    "Stratified squamous cells",
+    "Transitional epithelium"
+  ],
+  answer: "Pseudostratified ciliated columnar cells",
+  explanation: "Respiratory passage lining = pseudostratified + ciliated.",
+  sourceNote: "Paranasal sinuses lined w = pseudostrat cil colum cells"
+},
+
+{
+  category: "Exam 3 - Respiratory",
+  question: "Mucin increases the ______ of mucus and helps trap dust and dirt.",
+  options: [
+    "Viscosity / thickness",
+    "Partial pressure",
+    "Surface tension",
+    "Gas exchange rate"
+  ],
+  answer: "Viscosity / thickness",
+  explanation: "Mucin makes mucus thick + sticky.",
+  sourceNote: "Mucin increas visc (thickness) of mucus, and increase trap dust & dirt"
+},
+
+{
+  category: "Exam 3 - Respiratory",
+  question: "The alveolus is the site of gas exchange and is lined with:",
+  options: [
+    "Simple squamous epithelium",
+    "Pseudostratified ciliated columnar epithelium",
+    "Simple cuboidal epithelium",
+    "Stratified squamous epithelium"
+  ],
+  answer: "Simple squamous epithelium",
+  explanation: "Alveoli need thin walls → simple squamous.",
+  sourceNote: "Alveolus = site of gas ex and lined w simple squam"
+},
+
+{
+  category: "Exam 3 - Respiratory",
+  question: "Which cranial nerve innervates the lungs?",
+  options: [
+    "Vagus nerve",
+    "Phrenic nerve",
+    "Facial nerve",
+    "Hypoglossal nerve"
+  ],
+  answer: "Vagus nerve",
+  explanation: "Vagus = parasympathetic to lungs.",
+  sourceNote: "Vagus nerv (the cranial nerve that) innervates lungs"
+},
+
+{
+  category: "Exam 3 - Respiratory",
+  question: "The sympathetic nervous system causes which effect in the lungs?",
+  options: [
+    "Bronchodilation",
+    "Bronchoconstriction",
+    "Pulmonary surfactant breakdown",
+    "Mucus viscosity decrease"
+  ],
+  answer: "Bronchodilation",
+  explanation: "Sympathetic = opens airways.",
+  sourceNote: "symp nerv system causes bronchodilation"
+},
+
+{
+  category: "Exam 3 - Respiratory",
+  question: "Alveolar type II cells secrete:",
+  options: [
+    "Pulmonary surfactant",
+    "Mucin",
+    "Carbonic anhydrase",
+    "Hemoglobin"
+  ],
+  answer: "Pulmonary surfactant",
+  explanation: "Type II cells = pulmonary surfactant.",
+  sourceNote: "Alv type 2 cells secrete pulm serfectant"
+},
+
+{
+  category: "Exam 3 - Respiratory",
+  question: "Which statement about the respiratory center is FALSE?",
+  options: [
+    "It is in the cerebellum",
+    "It is a collection of autonomic nuclei in the brainstem",
+    "The medullary respiratory center regulates respiratory rate",
+    "The pontine respiratory center facilitates smooth transitions between inspiration and expiration",
+    "Chemoreceptors send signals to the respiratory center to alter breathing"
+  ],
+  answer: "It is in the cerebellum",
+  explanation: "Respiratory center = brainstem, NOT cerebellum.",
+  sourceNote: "Resp center is - NOT in cerebellum; brainstem nuclei; medullary center rate; pontine smooths insp/exp; chemoreceptors alter breathing"
+},
+
+{
+  category: "Exam 3 - Respiratory",
+  question: "Thoracic cavity muscles expand when breathing and ______ lung volume, which ______ lung pressure. Then lung pressure goes below atmospheric pressure, allowing air into lungs.",
+  options: [
+    "increase; decrease",
+    "increase; increase",
+    "decrease; decrease",
+    "decrease; increase"
+  ],
+  answer: "increase; decrease",
+  explanation: "Volume ↑ → pressure ↓ → air flows in.",
+  sourceNote: "Thorac cav muscles expand whe breathing and INC lung vol which DEC lung pressure. Then lung pressure goes below atmospheric pressure (allows air into lungs)"
+},
+
+{
+  category: "Exam 3 - Respiratory",
+  question: "Oxygen does NOT move:",
+  options: [
+    "Up its pressure gradient from low pressure to high pressure",
+    "From high pressure to low pressure",
+    "Down its pressure gradient",
+    "From alveoli into blood when alveolar PO₂ is higher"
+  ],
+  answer: "Up its pressure gradient from low pressure to high pressure",
+  explanation: "O₂ diffuses high → low pressure.",
+  sourceNote: "Ox does NOT move up pressure gradient from area of low to high pres"
+},
+
+{
+  category: "Exam 3 - Respiratory",
+  question: "Oxygen normally moves:",
+  options: [
+    "From high pressure to low pressure",
+    "From low pressure to high pressure",
+    "Only by active transport",
+    "Only after binding carbon dioxide"
+  ],
+  answer: "From high pressure to low pressure",
+  explanation: "Oxygen follows its pressure gradient.",
+  sourceNote: "Oxygen goes from high pressure to low pressure (down pressure gradient)"
+},
+
+{
+  category: "Exam 3 - Respiratory",
+  question: "Pleural cavity serous fluid helps:",
+  options: [
+    "Lubricate lungs from friction during breathing",
+    "Increase alveolar surface tension",
+    "Create pulmonary surfactant",
+    "Transport oxygen in blood"
+  ],
+  answer: "Lubricate lungs from friction during breathing",
+  explanation: "Pleural fluid = friction reducer.",
+  sourceNote: "Pleural cav has serous fluid that lubricates lungs from friction during breathing"
+},
+
+{
+  category: "Exam 3 - Respiratory",
+  question: "In the gas exchange sequence, what happens first?",
+  options: [
+    "Oxygen is inhaled",
+    "Oxygen is transported to cells by blood circulation",
+    "Cells use oxygen to generate carbon dioxide",
+    "Carbon dioxide is exhaled"
+  ],
+  answer: "Oxygen is inhaled",
+  explanation: "Gas exchange sequence starts with O₂ in.",
+  sourceNote: "Gas ex sequence - 1 ox inhaled"
+},
+
+{
+  category: "Exam 3 - Respiratory",
+  question: "After oxygen is inhaled, what is the next step in the gas exchange sequence?",
+  options: [
+    "Oxygen is transported to cells by blood circulation",
+    "Carbon dioxide is immediately exhaled",
+    "Cells generate oxygen",
+    "Blood transports carbon dioxide to cells"
+  ],
+  answer: "Oxygen is transported to cells by blood circulation",
+  explanation: "O₂ in → blood carries it to cells.",
+  sourceNote: "Gas ex sequence - 2 ox transported to cells by blood circ"
+},
+
+{
+  category: "Exam 3 - Respiratory",
+  question: "In the gas exchange sequence, cells use oxygen to generate:",
+  options: [
+    "Carbon dioxide",
+    "Pulmonary surfactant",
+    "Bicarbonate only",
+    "Mucin"
+  ],
+  answer: "Carbon dioxide",
+  explanation: "Cells use O₂ → make CO₂.",
+  sourceNote: "Gas ex sequence - 3 cells use ox to generate carbon dioxide"
+},
+
+{
+  category: "Exam 3 - Respiratory",
+  question: "After cells generate carbon dioxide, blood circulation transports carbon dioxide to the:",
+  options: [
+    "Lungs",
+    "Kidneys",
+    "Stomach",
+    "Liver"
+  ],
+  answer: "Lungs",
+  explanation: "CO₂ returns to lungs to be exhaled.",
+  sourceNote: "Gas ex sequence - 4 blood circ transports carbon diox to lungs"
+},
+
+{
+  category: "Exam 3 - Respiratory",
+  question: "The final step in the gas exchange sequence is:",
+  options: [
+    "Carbon dioxide is exhaled",
+    "Oxygen is inhaled",
+    "Oxygen is transported to cells",
+    "Cells generate carbon dioxide"
+  ],
+  answer: "Carbon dioxide is exhaled",
+  explanation: "Final gas exchange step = CO₂ out.",
+  sourceNote: "Gas ex sequence - 5 carbon diox exhaled"
+},
+
+{
+  category: "Exam 3 - Respiratory",
+  question: "The average resting respiratory rate is about:",
+  options: [
+    "12–15 breaths per minute",
+    "2–5 breaths per minute",
+    "25–35 breaths per minute",
+    "40–60 breaths per minute"
+  ],
+  answer: "12–15 breaths per minute",
+  explanation: "Resting respiratory rate = 12–15/min.",
+  sourceNote: "12-15 breaths per min @ rest (avg person)"
+},
+
+{
+  category: "Exam 3 - Respiratory",
+  question: "In RBCs within pulmonary capillaries of the lungs, the common CO₂ reaction is:",
+  options: [
+    "HCO₃⁻ recombines with H⁺ to form H₂CO₃",
+    "H₂CO₃ becomes glucose",
+    "O₂ combines with H⁺ to form HCO₃⁻",
+    "Hemoglobin converts CO₂ into surfactant"
+  ],
+  answer: "HCO₃⁻ recombines with H⁺ to form H₂CO₃",
+  explanation: "In lungs: HCO₃⁻ + H⁺ → H₂CO₃ → CO₂ out.",
+  sourceNote: "Co2 reac most com in rbc in pulm cap of lungs is = hc03- recombines with h+ to form H2CO3"
+},
+
+{
+  category: "Exam 3 - Respiratory",
+  question: "Hemoglobin transports:",
+  options: [
+    "Oxygen, carbon dioxide, and hydrogen ions",
+    "Oxygen only",
+    "Carbon dioxide only",
+    "Bicarbonate only"
+  ],
+  answer: "Oxygen, carbon dioxide, and hydrogen ions",
+  explanation: "Hemoglobin carries O₂, CO₂, and H⁺.",
+  sourceNote: "Hem transports - Ox - Carbon dioxide - Hydrogen ions"
+},
+
+{
+  category: "Exam 3 - Respiratory",
+  question: "Airway obstruction can cause hypoventilation, which can lead to:",
+  options: [
+    "Hypoxia and respiratory acidosis",
+    "Hyperoxia and respiratory alkalosis",
+    "Increased oxygen and low CO₂",
+    "Metabolic alkalosis only"
+  ],
+  answer: "Hypoxia and respiratory acidosis",
+  explanation: "Hypoventilation traps CO₂ → acidosis; lowers O₂ → hypoxia.",
+  sourceNote: "Airway obstruc = hypovent (which cause ->) = hypoxia (low blood O2) and resp acidosis"
+},
+
+{
+  category: "Exam 3 - Respiratory",
+  question: "O₂ moves from alveoli into blood because:",
+  options: [
+    "Partial pressure of oxygen is higher in alveoli than in blood",
+    "Partial pressure of oxygen is lower in alveoli than in blood",
+    "Blood pressure is higher in alveoli",
+    "Oxygen moves against its pressure gradient"
+  ],
+  answer: "Partial pressure of oxygen is higher in alveoli than in blood",
+  explanation: "Alveolar PO₂ higher → O₂ diffuses into blood.",
+  sourceNote: "O2 goes fro alv then into blood becuase partial pressure of ox is higher in alv than in blood"
+},
+
+{
+  category: "Exam 3 - Respiratory",
+  question: "Match the condition to the correct definition: pneumothorax is:",
+  options: [
+    "Collapsed lung",
+    "Chronic inflammatory respiratory condition",
+    "Progressive airflow limitation and tissue destruction",
+    "Disordered healing leading to fibrosis"
+  ],
+  answer: "Collapsed lung",
+  explanation: "Pneumothorax = air in pleural space → collapsed lung.",
+  sourceNote: "Pnemothorax - collapsed lung"
+},
+
+{
+  category: "Exam 3 - Respiratory",
+  question: "Match the condition to the correct definition: pulmonary fibrosis is:",
+  options: [
+    "Disordered healing leading to development of fibrosis",
+    "Collapsed lung",
+    "Chronic inflammatory respiratory condition",
+    "Progressive airflow limitation and tissue destruction"
+  ],
+  answer: "Disordered healing leading to development of fibrosis",
+  explanation: "Fibrosis = scar-like stiffening.",
+  sourceNote: "Pulm fibrosis - disregard/disordered healing leads to dev of fibrosis"
+},
+
+{
+  category: "Exam 3 - Respiratory",
+  question: "Match the condition to the correct definition: asthma is:",
+  options: [
+    "Chronic inflammatory respiratory condition",
+    "Collapsed lung",
+    "Disordered healing leading to fibrosis",
+    "Progressive airflow limitation and tissue destruction"
+  ],
+  answer: "Chronic inflammatory respiratory condition",
+  explanation: "Asthma = chronic airway inflammation.",
+  sourceNote: "Asthma - chronic inflam resp cond"
+},
+
+{
+  category: "Exam 3 - Respiratory",
+  question: "Match the condition to the correct definition: COPD is:",
+  options: [
+    "Progressive airflow limitation and tissue destruction",
+    "Collapsed lung",
+    "Chronic inflammatory respiratory condition",
+    "Acute pleural space collapse"
+  ],
+  answer: "Progressive airflow limitation and tissue destruction",
+  explanation: "COPD = progressive airflow limitation.",
+  sourceNote: "COPD - progress airflow limit and tissue destruct"
+},
+
+{
+  category: "Exam 3 - Respiratory",
+  question: "Air flows out of the lungs during expiration because:",
+  options: [
+    "Intrapulmonary pressure is greater than atmospheric pressure",
+    "Intrapulmonary pressure is less than atmospheric pressure",
+    "Atmospheric pressure drops below alveolar pressure during inhalation",
+    "Oxygen partial pressure becomes higher in blood than alveoli"
+  ],
+  answer: "Intrapulmonary pressure is greater than atmospheric pressure",
+  explanation: "Expiration = lung pressure > atmosphere → air out.",
+  sourceNote: "Airflow out of lung during expir because intrapulm pressure is greater than atmospheric pressure"
+},
+
+{
+  category: "Exam 3 - Respiratory",
+  question: "Henry’s law is demonstrated by:",
+  options: [
+    "Hyperbaric oxygenation",
+    "Bronchodilation",
+    "Pulmonary fibrosis",
+    "Hemoglobin buffering H⁺"
+  ],
+  answer: "Hyperbaric oxygenation",
+  explanation: "Henry’s law = more pressure → more gas dissolves.",
+  sourceNote: "Henrys law = is ex of hyperbaric oxygenation"
+},
     
       // =========================
       // EXAM 3 — DIGESTIVE
