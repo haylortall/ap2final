@@ -2246,19 +2246,25 @@ function updateTracking(question, isCorrect) {
       startMode('FullCoverage');
     }
 
-    function renderHome() {
-      const p = loadProgress();
-      const activeMissed = getMissedIds().length;
-      const mastered = Object.values(p.missed || {}).filter(x => x && !x.active && (x.correctStreak || 0) >= 2).length;
-      document.getElementById("app").innerHTML = `
-        <h1>AP2 Final Review</h1>
-        <p class="sub">${QUESTIONS.length} questions. Tiny chunks. Missed ones come back until your brain stops being rude. Ur welcome ♡taylor</p>
+   function renderHome() {
+  const p = loadProgress();
 
-        <div class="statgrid">
-          <div class="stat"><b>${p.total || 0}</b><span class="small">answered</span></div>
-          <div class="stat"><b>${activeMissed}</b><span class="small">missed</span></div>
-          <div class="stat"><b>${mastered}</b><span class="small">mastered</span></div>
-        </div>
+  const answeredCount = (p.answeredIds || []).length;
+
+  const activeMissed = Object.values(p.missed || {})
+    .filter(m => m.active).length;
+
+  const masteredCount = (p.masteredIds || []).length;
+
+  document.getElementById("app").innerHTML = `
+    <h1>AP2 Final Review</h1>
+    <p class="sub">${QUESTIONS.length} questions. Tiny chunks. Missed ones come back until your brain stops being rude. Ur welcome ♡taylor</p>
+
+    <div class="statgrid">
+      <div class="stat"><b>${answeredCount}</b><span class="small">answered</span></div>
+      <div class="stat"><b>${activeMissed}</b><span class="small">missed</span></div>
+      <div class="stat"><b>${masteredCount}</b><span class="small">mastered</span></div>
+    </div>
 
         <div class="grid menu">
           <button onclick="startMode('Exam3')">Exam 3<br><span class="small">Respiratory + digestive + metabolism</span></button>
