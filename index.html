@@ -1983,74 +1983,130 @@
       sourceNote: q.sourceNote || ""
     }));
 
-    const STORAGE_KEY = "ap2FinalReviewProgress_v2_full";
-    const ROUND_SIZE = 10;
+    const STORAGE_KEY = "ap2FinalReviewProgress_v3_logic";
+const ROUND_SIZE = 10;
+const MASTERED_REQUIRED = 5;
+const MISSED_CLEAR_REQUIRED = 2;
 
-    let state = {
-      screen: "home",
-      mode: null,
-      round: [],
-      index: 0,
-      score: 0,
-      answered: false,
-      userAnswers: []
+let state = {
+  screen: "home",
+  mode: null,
+  round: [],
+  index: 0,
+  score: 0,
+  answered: false,
+  userAnswers: []
+};
+
+function freshProgress() {
+  return {
+    missed: {},
+    attempts: {},
+    correctById: {},
+    correctSinceMiss: {},
+    answeredIds: [],
+    masteredIds: [],
+    fullCoverageSeen: [],
+    modeSeen: {}
+  };
+}
+
+function loadProgress() {
+  const saved = localStorage.getItem(STORAGE_KEY);
+  if (!saved) return freshProgress();
+
+  try {
+    const p = JSON.parse(saved);
+    return {
+      ...freshProgress(),
+      ...p,
+      missed: p.missed || {},
+      attempts: p.attempts || {},
+      correctById: p.correctById || {},
+      correctSinceMiss: p.correctSinceMiss || {},
+      answeredIds: p.answeredIds || [],
+      masteredIds: p.masteredIds || [],
+      fullCoverageSeen: p.fullCoverageSeen || [],
+      modeSeen: p.modeSeen || {}
     };
+  } catch {
+    return freshProgress();
+  }
+}
 
-    function loadProgress() {
-      const saved = localStorage.getItem(STORAGE_KEY);
-      if (!saved) return { missed: {}, correct: 0, total: 0, fullCoverageSeen: [] };
-      try { return JSON.parse(saved); } catch { return { missed: {}, correct: 0, total: 0, fullCoverageSeen: [] }; }
-    }
+function saveProgress(progress) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(progress));
+}
 
-    function saveProgress(progress) {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(progress));
-    }
+function resetProgress() {
+  if (confirm("Reset all progress and missed questions?")) {
+    localStorage.removeItem(STORAGE_KEY);
+    renderHome();
+  }
+}
 
-    function resetProgress() {
-      if (confirm("Reset all progress and missed questions?")) {
-        localStorage.removeItem(STORAGE_KEY);
-        renderHome();
+function normalize(s) {
+  return String(s || "")
+    .toLowerCase()
+    .replace(/[^\w\s-]/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function getMissedIds() {
+  return Object.entries(loadProgress().missed || {})
+    .filter(([id, data]) => data && data.active)
+    .map(([id]) => id);
+}
+
+function getMasteredIds() {
+  return loadProgress().masteredIds || [];
+}
+
+function updateTracking(question, isCorrect) {
+  const p = loadProgress();
+
+  p.attempts[question.id] = (p.attempts[question.id] || 0) + 1;
+
+  if (!p.answeredIds.includes(question.id)) {
+    p.answeredIds.push(question.id);
+  }
+
+  p.correctById[question.id] = p.correctById[question.id] || 0;
+  p.correctSinceMiss[question.id] = p.correctSinceMiss[question.id] || 0;
+
+  p.missed = p.missed || {};
+  const current = p.missed[question.id] || {
+    active: false,
+    missedCount: 0
+  };
+
+  if (isCorrect) {
+    p.correctById[question.id] += 1;
+
+    if (current.active) {
+      p.correctSinceMiss[question.id] += 1;
+
+      if (p.correctSinceMiss[question.id] >= MISSED_CLEAR_REQUIRED) {
+        current.active = false;
       }
     }
 
-    function normalize(s) {
-      return String(s || "")
-        .toLowerCase()
-        .replace(/[^\w\s-]/g, "")
-        .replace(/\s+/g, " ")
-        .trim();
+    if (
+      p.correctById[question.id] >= MASTERED_REQUIRED &&
+      !p.masteredIds.includes(question.id)
+    ) {
+      p.masteredIds.push(question.id);
     }
+  } else {
+    current.active = true;
+    current.missedCount = (current.missedCount || 0) + 1;
+    p.correctSinceMiss[question.id] = 0;
+  }
 
-    function getMissedIds() {
-      return Object.entries(loadProgress().missed || {})
-        .filter(([id, data]) => data && data.active)
-        .map(([id]) => id);
-    }
-
-    function updateTracking(question, isCorrect) {
-      const p = loadProgress();
-      p.total = (p.total || 0) + 1;
-      if (isCorrect) p.correct = (p.correct || 0) + 1;
-
-      p.missed = p.missed || {};
-      const current = p.missed[question.id] || { active: false, correctStreak: 0, missedCount: 0 };
-
-      if (isCorrect) {
-        if (current.active) {
-          current.correctStreak = (current.correctStreak || 0) + 1;
-          if (current.correctStreak >= 2) {
-            current.active = false;
-          }
-        }
-      } else {
-        current.active = true;
-        current.correctStreak = 0;
-        current.missedCount = (current.missedCount || 0) + 1;
-      }
-
-      p.missed[question.id] = current;
-      saveProgress(p);
-    }
+  p.missed[question.id] = current;
+  saveProgress(p);
+}
 
     function shuffle(arr) {
       return [...arr].sort(() => Math.random() - 0.5);
