@@ -2162,15 +2162,15 @@ function updateTracking(question, isCorrect) {
       }
 
       state = {
-        screen: "quiz",
-        mode,
-        round: unique.slice(0, ROUND_SIZE),
-        index: 0,
-        score: 0,
-        answered: false,
-        userAnswers: []
-      };
-
+  screen: "quiz",
+  mode,
+  round: unique.slice(0, ROUND_SIZE),
+  index: 0,
+  score: 0,
+  answered: false,
+  userAnswers: [],
+  shuffledOptions: {}
+};
       renderQuiz();
     }
 
