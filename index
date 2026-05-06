@@ -2292,14 +2292,17 @@ function updateTracking(question, isCorrect) {
           <button onclick="chooseAnswer(document.getElementById('fillInput').value)">Submit</button>
         `;
       } else {
-        inputHTML = `<div class="grid">` + q.options.map(opt => {
-          let cls = "option";
-          if (state.answered) {
-            if (opt === q.answer) cls += " correct";
-            if (last && opt === last.user && !last.isCorrect) cls += " wrong";
-          }
-          return `<button class="${cls}" onclick="chooseAnswer('${opt.replace(/'/g, "\\'")}')">${opt}</button>`;
-        }).join("") + `</div>`;
+        const optionSet = state.shuffledOptions[q.id] || shuffle(q.options);
+state.shuffledOptions[q.id] = optionSet;
+
+inputHTML = `<div class="grid">` + optionSet.map(opt => {
+  let cls = "option";
+  if (state.answered) {
+    if (opt === q.answer) cls += " correct";
+    if (last && opt === last.user && !last.isCorrect) cls += " wrong";
+  }
+  return `<button class="${cls}" onclick="chooseAnswer(${JSON.stringify(opt)})">${opt}</button>`;
+}).join("") + `</div>`;
       }
 
       const feedback = state.answered ? `
