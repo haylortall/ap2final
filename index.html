@@ -2119,27 +2119,31 @@ function updateTracking(question, isCorrect) {
       return q.category || "Mixed";
     }
 
-    function getQuestionsForMode(mode) {
-      if (mode === "Exam3") return QUESTIONS.filter(q => q.modeGroup === "Exam3");
-      if (mode === "Exam4") return QUESTIONS.filter(q => q.modeGroup === "Exam4");
-      if (mode === "Quiz") return QUESTIONS.filter(q => q.modeGroup === "Quiz");
-      if (mode === "FullCoverage") {
-        const p = loadProgress();
-        const seen = new Set(p.fullCoverageSeen || []);
-        const unseen = QUESTIONS.filter(q => !seen.has(q.id));
-        return unseen.length ? unseen : [];
-      }
-      if (mode === "Missed") {
-        const ids = getMissedIds();
-        return QUESTIONS.filter(q => ids.includes(q.id));
-      }
-      if (mode === "Mixed") {
-        const missed = QUESTIONS.filter(q => getMissedIds().includes(q.id));
-        const all = QUESTIONS;
-        return [...missed, ...missed, ...all];
-      }
-      return QUESTIONS;
-    }
+    if (mode === "FullCoverage") {
+  const progress = loadProgress();
+
+  const seen = new Set(progress.fullCoverageSeen || []);
+
+  let unseen = QUESTIONS.filter(q => !seen.has(q.id));
+
+  // if all seen, reset cycle
+  if (!unseen.length) {
+    progress.fullCoverageSeen = [];
+    saveProgress(progress);
+    unseen = [...QUESTIONS];
+  }
+
+  const nextBatch = shuffle(unseen).slice(0, ROUND_SIZE);
+
+  progress.fullCoverageSeen = [
+    ...(progress.fullCoverageSeen || []),
+    ...nextBatch.map(q => q.id)
+  ];
+
+  saveProgress(progress);
+
+  return nextBatch;
+}
 
     function startMode(mode) {
   const pool = getQuestionsForMode(mode);
@@ -2190,10 +2194,12 @@ function updateTracking(question, isCorrect) {
     }
   }
 
+  if (mode !== "FullCoverage") {
   p.modeSeen[modeKey] = [
     ...(p.modeSeen[modeKey] || []),
     ...unique.map(q => q.id)
   ];
+}
 
   saveProgress(p);
 
