@@ -2119,30 +2119,49 @@ function updateTracking(question, isCorrect) {
       return q.category || "Mixed";
     }
 
-    if (mode === "FullCoverage") {
-  const progress = loadProgress();
+    function getQuestionsForMode(mode) {
+  if (mode === "Exam3") return QUESTIONS.filter(q => q.modeGroup === "Exam3");
+  if (mode === "Exam4") return QUESTIONS.filter(q => q.modeGroup === "Exam4");
+  if (mode === "Quiz") return QUESTIONS.filter(q => q.modeGroup === "Quiz");
 
-  const seen = new Set(progress.fullCoverageSeen || []);
+  if (mode === "FullCoverage") {
+    const progress = loadProgress();
 
-  let unseen = QUESTIONS.filter(q => !seen.has(q.id));
+    const seen = new Set(progress.fullCoverageSeen || []);
 
-  // if all seen, reset cycle
-  if (!unseen.length) {
-    progress.fullCoverageSeen = [];
+    let unseen = QUESTIONS.filter(q => !seen.has(q.id));
+
+    // if all seen, reset cycle
+    if (!unseen.length) {
+      progress.fullCoverageSeen = [];
+      saveProgress(progress);
+      unseen = [...QUESTIONS];
+    }
+
+    const nextBatch = shuffle(unseen).slice(0, ROUND_SIZE);
+
+    progress.fullCoverageSeen = [
+      ...(progress.fullCoverageSeen || []),
+      ...nextBatch.map(q => q.id)
+    ];
+
     saveProgress(progress);
-    unseen = [...QUESTIONS];
+
+    return nextBatch;
   }
 
-  const nextBatch = shuffle(unseen).slice(0, ROUND_SIZE);
+  if (mode === "Missed") {
+    const ids = getMissedIds();
+    return QUESTIONS.filter(q => ids.includes(q.id));
+  }
 
-  progress.fullCoverageSeen = [
-    ...(progress.fullCoverageSeen || []),
-    ...nextBatch.map(q => q.id)
-  ];
+  if (mode === "Mixed") {
+    const missed = QUESTIONS.filter(q => getMissedIds().includes(q.id));
+    const all = QUESTIONS;
+    return [...missed, ...missed, ...all];
+  }
 
-  saveProgress(progress);
-
-  return nextBatch;
+  return QUESTIONS;
 }
 
     function startMode(mode) {
