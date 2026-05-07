@@ -2338,7 +2338,7 @@ inputHTML = `<div class="grid">` + optionSet.map(opt => {
     if (opt === q.answer) cls += " correct";
     if (last && opt === last.user && !last.isCorrect) cls += " wrong";
   }
-  return `<button class="${cls}" onclick="chooseAnswer(${JSON.stringify(opt)})">${opt}</button>`;
+  return `<button class="${cls}" onclick='chooseAnswer(${JSON.stringify(opt)})'>${opt}</button>`;
 }).join("") + `</div>`;
       }
 
