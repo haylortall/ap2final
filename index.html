@@ -2142,37 +2142,74 @@ function updateTracking(question, isCorrect) {
     }
 
     function startMode(mode) {
-      const pool = getQuestionsForMode(mode);
-      if (!pool.length) {
-        if (mode === "FullCoverage") {
-          renderFullCoverageDone();
-          return;
-        }
-        alert(mode === "Missed" ? "No missed questions yet. Iconic." : "No questions found.");
-        return;
-      }
+  const pool = getQuestionsForMode(mode);
 
-      const unique = [];
-      const seen = new Set();
-      for (const q of shuffle(pool)) {
-        if (!seen.has(q.id)) {
-          unique.push(q);
-          seen.add(q.id);
-        }
-      }
-
-      state = {
-  screen: "quiz",
-  mode,
-  round: unique.slice(0, ROUND_SIZE),
-  index: 0,
-  score: 0,
-  answered: false,
-  userAnswers: [],
-  shuffledOptions: {}
-};
-      renderQuiz();
+  if (!pool.length) {
+    if (mode === "FullCoverage") {
+      renderFullCoverageDone();
+      return;
     }
+    alert(mode === "Missed" ? "No missed questions yet. Iconic." : "No questions found.");
+    return;
+  }
+
+  const p = loadProgress();
+  p.modeSeen = p.modeSeen || {};
+
+  const modeKey = mode;
+  const seenForMode = new Set(p.modeSeen[modeKey] || []);
+
+  let available = pool.filter(q => !seenForMode.has(q.id));
+
+  // If you've seen everything in this mode, restart that mode's cycle.
+  if (!available.length) {
+    p.modeSeen[modeKey] = [];
+    available = pool;
+  }
+
+  const unique = [];
+  const roundSeen = new Set();
+
+  for (const q of shuffle(available)) {
+    if (!roundSeen.has(q.id)) {
+      unique.push(q);
+      roundSeen.add(q.id);
+    }
+    if (unique.length >= ROUND_SIZE) break;
+  }
+
+  // If there are fewer than 10 unseen left, fill the rest from the full pool,
+  // but still avoid duplicates inside this round.
+  if (unique.length < ROUND_SIZE) {
+    for (const q of shuffle(pool)) {
+      if (!roundSeen.has(q.id)) {
+        unique.push(q);
+        roundSeen.add(q.id);
+      }
+      if (unique.length >= ROUND_SIZE) break;
+    }
+  }
+
+  p.modeSeen[modeKey] = [
+    ...(p.modeSeen[modeKey] || []),
+    ...unique.map(q => q.id)
+  ];
+
+  saveProgress(p);
+
+  state = {
+    screen: "quiz",
+    mode,
+    round: unique.slice(0, ROUND_SIZE),
+    index: 0,
+    score: 0,
+    answered: false,
+    userAnswers: [],
+    shuffledOptions: {}
+  };
+
+  renderQuiz();
+}
 
     function chooseAnswer(value) {
       if (state.answered) return;
